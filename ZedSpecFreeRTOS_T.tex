@@ -1,0 +1,952 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Task
+%   CreateTask\_T
+%   deletetask\_T
+%   ExecuteRunningTask\_T
+%   SuspendTask\_T
+%   ResumeTask\_T
+%   ChangeTaskPriority\_T
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[a4paper, 12pt]{article}
+\usepackage[margin=2cm, includeheadfoot]{geometry}
+\usepackage{z-eves}
+
+\makeatletter
+\renewcommand{\@znoskip}{\offinterlineskip}
+
+\begin{document}
+
+%\begin{zsection}
+%  \SECTION m6Task \parents standard\_toolkit
+%\end{zsection}
+
+\begin{zed}
+  [CONTEXT, TASK]
+\end{zed}
+
+\begin{axdef}
+  bare\_context: CONTEXT\\
+  idle: TASK
+\end{axdef}
+
+\begin{zed}
+STATE ::= nonexistent | ready | blocked | suspended | running
+\end{zed}
+
+%\begin{zed} % comment this when use with Z/Eves
+\begin[disabled]{zed} % comment this when use with ProZ
+transition == (\{blocked\} \cross  \{nonexistent, ready, running, suspended\}) \cup  (\{nonexistent\} \cross  \{ready, running\}) \cup  (\{ready\} \cross  \{nonexistent, running, suspended\}) \cup  (\{running\} \cross  \{blocked, nonexistent, ready, suspended\}) \cup  (\{suspended\} \cross  \{nonexistent, ready, running\})
+\end{zed}
+
+\begin{theorem}{grule gTransitionType}
+transition \in  \power  (STATE \cross  STATE)
+\end{theorem}
+
+\begin{zproof}[gTransitionType]
+with enabled (transition) prove by reduce;
+\end{zproof}
+
+\begin{theorem}{rule lInTransition}
+\forall  l, r: STATE | (l, r) \in  \{nonexistent \mapsto  ready, running \mapsto  ready, blocked \mapsto  ready, suspended \mapsto  ready, ready \mapsto  running, blocked \mapsto  running, suspended \mapsto  running, nonexistent \mapsto  running, running \mapsto  suspended, ready \mapsto  suspended, blocked \mapsto  suspended, running \mapsto  blocked, running \mapsto  nonexistent, ready \mapsto  nonexistent, blocked \mapsto  nonexistent, suspended \mapsto  nonexistent\} @ (l, r) \in  transition
+\end{theorem}
+
+\begin{zproof}[lInTransition]
+with normalization with enabled (transition) prove by reduce;
+\end{zproof}
+
+%
+%This two definition will be used in later work.
+%
+%\begin{axdef}
+%  slice\_delay: \nat 
+%\where
+%  %\Label{disabled slice_delay_def} slice\_delay = 1
+%  slice\_delay = 1
+%\end{axdef}
+%
+%\begin{zed}
+%  BOOL ::= TRUE | FALSE
+%\end{zed}
+%
+\begin{schema}{TaskData}
+  tasks: \power  TASK\\
+  running\_task: TASK
+\where
+  running\_task \in  tasks\\
+  idle \in  tasks
+\end{schema}
+
+\begin{schema}{Init\_TaskData}
+  TaskData'
+\where
+  tasks' = \{idle\}\\
+  running\_task' = idle
+\end{schema}
+
+\begin{theorem}{TaskDataInit}
+\exists  TaskData' @ Init\_TaskData
+\end{theorem}
+
+\begin{zproof}[TaskDataInit]
+prove by reduce;
+\end{zproof}
+
+\begin{schema}{StateData}
+  state: TASK \fun  STATE
+\where
+  state(idle) \in  \{ready, running\}
+\end{schema}
+
+\begin{schema}{Init\_StateData}
+  StateData'
+\where
+  state' = (\lambda  x: TASK @ nonexistent) \oplus  \{(idle \mapsto  running)\}
+\end{schema}
+
+\begin{theorem}{StateDataInit}
+\exists  StateData' @ Init\_StateData
+\end{theorem}
+
+\begin{zproof}[StateDataInit]
+prove by reduce;
+\end{zproof}
+
+\begin{schema}{ContextData}
+  phys\_context: CONTEXT\\
+  log\_context: TASK \fun  CONTEXT
+\end{schema}
+
+\begin{schema}{Init\_ContextData}
+  ContextData'
+\where
+  phys\_context' = bare\_context\\
+  log\_context' = (\lambda  x: TASK @ bare\_context)
+\end{schema}
+
+\begin{theorem}{ContextDataInit}
+\exists  ContextData' @ Init\_ContextData
+\end{theorem}
+
+\begin{zproof}[ContextDataInit]
+prove by reduce;
+\end{zproof}
+
+\begin{schema}{PrioData}
+  priority: TASK \fun  \nat 
+\where
+  priority(idle) = 0
+\end{schema}
+
+\begin{schema}{Init\_PrioData}
+  PrioData'
+\where
+  priority' = (\lambda  x: TASK @ 0)
+\end{schema}
+
+\begin{theorem}{PrioDataInit}
+\exists  PrioData' @ Init\_PrioData
+\end{theorem}
+
+\begin{zproof}[PrioDataInit]
+prove by reduce;
+\end{zproof}
+
+\begin{schema}{Task}
+  TaskData\\
+  StateData\\
+  ContextData\\
+  PrioData
+\where
+  tasks = TASK \setminus  (state \inv  \limg  \{nonexistent\} \rimg )\\
+  state \inv  \limg  \{running\} \rimg  = \{running\_task\}\\
+  \forall  pt: state \inv  \limg  \{ready\} \rimg  @ priority(running\_task)\geq  priority(pt)
+\end{schema}
+
+\begin{schema}{\Delta Task}
+  Task\\
+  Task'
+\where
+  \forall  st: TASK | state'(st) \neq  state(st) @ state(st) \mapsto  state'(st) \in  transition
+\end{schema}
+
+\begin{theorem}{TaskProperty1}
+\forall  Task @ state(running\_task) = running
+\end{theorem}
+
+\begin{zproof}[TaskProperty1]
+invoke Task;
+apply extensionality to predicate state \inv  \limg  \{running\} \rimg  = \{running\_task\};
+rewrite;
+\end{zproof}
+
+\begin{theorem}{TaskProperty2}
+\forall  Task @ \forall  t: TASK | t \in  state \inv  \limg  \{blocked\} \rimg  @ t \in  tasks
+\end{theorem}
+
+\begin{zproof}[TaskProperty2]
+invoke Task;
+prove;
+\end{zproof}
+
+\begin{theorem}{TaskProperty3}
+\forall  Task @ \forall  t: state \inv  \limg  \{ready\} \rimg  @ t \in  tasks \setminus  \{running\_task\}
+\end{theorem}
+
+\begin{zproof}[TaskProperty3]
+invoke Task;
+prove;
+\end{zproof}
+
+\begin{theorem}{TaskProperty6}
+\forall  Task; t: TASK | 0 < priority(t) @ idle \neq  t
+\end{theorem}
+
+\begin{zproof}[TaskProperty6]
+prove by reduce;
+\end{zproof}
+
+%\begin{schema}{Init} % comment this when use with Z/Eves
+\begin{schema}{Init\_Task} % comment this when use with ProZ
+  Task'
+\where
+  Init\_TaskData\\
+  Init\_StateData\\
+  Init\_ContextData\\
+  Init\_PrioData
+\end{schema}
+
+\begin{theorem}{TaskInit}
+\exists  Task' @ Init\_Task
+\end{theorem}
+
+\begin{zproof}[TaskInit]
+prove by reduce;
+apply extensionality;
+prove;
+apply applyOverride1;
+prove;
+\end{zproof}
+
+\begin{schema}{Reschedule}
+  \Delta Task\\
+  target?: TASK\\
+  tasks?: \power  TASK\\
+  st?: STATE\\
+  pri?: TASK \fun  \nat 
+\where
+  tasks' = tasks?\\
+  running\_task' = target?\\
+  state' = state \oplus  \{(target? \mapsto  running), (running\_task \mapsto  st?)\}\\
+  phys\_context' = log\_context(target?)\\
+  log\_context' = log\_context \oplus  \{(running\_task \mapsto  phys\_context)\}\\
+  priority' = pri?
+\end{schema}
+
+\begin{zed}
+disableReschedule \defs [Task | false] \land  Reschedule
+\end{zed}
+
+\begin{schema}{CreateTaskN\_T}
+  \Delta Task\\
+  target?: TASK\\
+  newpri?: \nat 
+\where
+  state(target?) = nonexistent\\
+  newpri? \leq  priority(running\_task)\\
+  tasks' = tasks \cup  \{target?\}\\
+  running\_task' = running\_task\\
+  state' = state \oplus  \{(target? \mapsto  ready)\}\\
+  \Xi ContextData\\
+  priority' = priority \oplus  \{(target? \mapsto  newpri?)\}
+\end{schema}
+
+\begin{schema}{CreateTaskN\_TFSBSig}
+  Task\\
+  target?: TASK \\
+  newpri?: \nat
+\where
+  state(target?) = nonexistent\\
+  newpri? \leq  priority(running\_task)
+\end{schema}
+
+\begin{theorem}{CreateTaskN\_T\_vc\_ref}
+\forall  CreateTaskN\_TFSBSig | true @ \pre  CreateTaskN\_T
+\end{theorem}
+
+\begin{zproof}[CreateTaskN\_T\_vc\_ref]
+with disabled (ContextData) prove by reduce;
+apply extensionality to predicate (state \oplus  \{(target?, ready)\}) \inv  \limg  \{running\} \rimg  = state \inv  \limg  \{running\} \rimg ;
+apply extensionality to predicate TASK \setminus  ((state \oplus  \{(target?, ready)\}) \inv  \limg  \{nonexistent\} \rimg ) = \{target?\} \cup  (TASK \setminus  (state \inv  \limg  \{nonexistent\} \rimg ));
+instantiate pt\_\_0 == pt;
+with enabled (applyOverride) prove;
+apply applyOverride;
+with normalization reduce;
+\end{zproof}
+
+\begin{schema}{CreateTaskS\_T}
+  \Delta Task\\
+  target?: TASK\\
+  newpri?: \nat 
+\where
+  state(target?) = nonexistent\\
+  newpri? > priority(running\_task)\\
+  \exists  st?: STATE; tasks?: \power  TASK; pri?: TASK \fun  \nat  | st? = ready \land  tasks? = tasks \cup  \{target?\} \land  pri? = priority \oplus  \{(target? \mapsto  newpri?)\} @ Reschedule
+\end{schema}
+
+\begin{schema}{CreateTaskS\_TFSBSig}
+  Task\\
+  target?: TASK \\
+  newpri?: \nat
+\where
+  state(target?) = nonexistent\\
+  newpri? > priority(running\_task)
+\end{schema}
+
+\begin{theorem}{CreateTaskS\_T\_vc\_ref}
+\forall  CreateTaskS\_TFSBSig | true @ \pre  CreateTaskS\_T
+\end{theorem}
+
+\begin{zproof}[CreateTaskS\_T\_vc\_ref]
+prove by reduce;
+apply applyOverride to expression (state \oplus  (\{(running\_task, ready)\} \cup  \{(target?, running)\})) idle;
+prove;
+cases;
+apply extensionality to predicate (state \oplus  (\{(running\_task, ready)\} \cup  \{(target?, running)\})) \inv  \limg  \{running\} \rimg  = \{target?\};
+apply extensionality to predicate state \inv  \limg  \{running\} \rimg  = \{running\_task\};
+prove;
+instantiate x\_\_0 == x;
+prove;
+apply applyOverride;
+prove;
+split x \in  TASK;
+split x = running\_task;
+prove;
+next;
+apply extensionality to predicate TASK \setminus  ((state \oplus  (\{(running\_task, ready)\} \cup  \{(target?, running)\})) \inv  \limg  \{nonexistent\} \rimg ) = TASK \setminus  (state \inv  \limg  \{nonexistent\} \rimg ) \cup  ((state \oplus  (\{(running\_task, ready)\} \cup  \{(target?, running)\})) \inv  \limg  \{running\} \rimg );
+prove;
+apply applyOverride;
+prove;
+split y = running\_task;
+split y = target?;
+split \lnot  state y = nonexistent;
+prove;
+next;
+apply applyOverride;
+prove;
+split pt = running\_task;
+prove;
+instantiate pt\_\_0 == pt;
+prove;
+next;
+apply applyOverride;
+prove;
+with normalization prove;
+apply extensionality to predicate state \inv  \limg  \{running\} \rimg  = \{running\_task\};
+instantiate y == st;
+prove;
+next;
+\end{zproof}
+
+\begin{zed}
+CreateTask\_T \defs CreateTaskN\_T \lor  CreateTaskS\_T
+\end{zed}
+
+\begin{schema}{DeleteTaskN\_T}
+  \Delta Task\\
+  target?: TASK\\
+  topReady!: TASK
+\where
+  target? \in  tasks \setminus  \{idle\}\\
+  state(target?) \in  \{ready, blocked, suspended\}\\
+  tasks' = tasks \setminus  \{target?\}\\
+  running\_task' = running\_task\\
+  state' = state \oplus  \{(target? \mapsto  nonexistent)\}\\
+  phys\_context' = phys\_context\\
+  log\_context' = log\_context \oplus  \{(target? \mapsto  bare\_context)\}\\
+  \Xi PrioData\\
+  topReady! = running\_task
+\end{schema}
+
+\begin{schema}{DeleteTaskN\_TFSBSig}
+  Task\\
+  target?: TASK
+\where
+  target? \in  tasks \setminus  \{idle\}\\
+  state(target?) \in  \{ready, blocked, suspended\}
+\end{schema}
+
+\begin{theorem}{DeleteTaskN\_T\_vc\_ref}
+\forall  DeleteTaskN\_TFSBSig | true @ \pre  DeleteTaskN\_T
+\end{theorem}
+
+\begin{zproof}[DeleteTaskN\_T\_vc\_ref]
+prove by reduce;
+apply extensionality to predicate TASK \setminus  ((state \oplus  \{(target?, nonexistent)\}) \inv  \limg  \{nonexistent\} \rimg ) = TASK \setminus  (\{target?\} \cup  (state \inv  \limg  \{nonexistent\} \rimg ));
+apply extensionality to predicate (state \oplus  \{(target?, nonexistent)\}) \inv  \limg  \{running\} \rimg  = state \inv  \limg  \{running\} \rimg ;
+apply extensionality to predicate state \inv  \limg  \{running\} \rimg  = \{running\_task\};
+prove;
+apply applyOverride;
+instantiate pt\_\_0 == pt;
+split state target? = ready;
+prove;
+split state target? = blocked;
+prove;
+\end{zproof}
+
+\begin{schema}{DeleteTaskS\_T}
+  \Delta Task\\
+  target?: TASK\\
+  topReady!: TASK
+\where
+  target? \in  tasks \setminus  \{idle\}\\
+  state(target?) \in  \{running\}\\
+  state(topReady!) = ready\\
+  \forall  t: state \inv  \limg  \{ready\} \rimg  @ priority(topReady!) \geq  priority(t)\\
+  tasks' = tasks \setminus  \{target?\}\\
+  running\_task' = topReady!\\
+  state' = state \oplus  \{(topReady! \mapsto  running), (target? \mapsto  nonexistent)\}\\
+  phys\_context' = log\_context(topReady!)\\
+  log\_context' = log\_context \oplus  \{(target? \mapsto  bare\_context)\}\\
+  \Xi PrioData
+\end{schema}
+
+\begin{schema}{DeleteTaskS\_TFSBSig}
+  Task\\
+  target?: TASK
+\where
+  target? \in  tasks \setminus  \{idle\}\\
+  state(target?) \in  \{running\}\\
+  \exists  topReady!: state \inv \limg \{ready\} \rimg @ (\forall  t: state \inv  \limg  \{ready\} \rimg  @ priority(topReady!) \geq  priority(t))
+\end{schema}
+
+\begin{theorem}{lDeleteTaskS\_T\_Lemma}
+\forall  Task; topReady!, target?: TASK | target? \in  tasks \setminus  \{idle\} \land  state target? \in  \{running\} \land  state topReady! = ready \land  (\forall  rtsk: state \inv  \limg  \{ready\} \rimg  @ priority topReady! \geq  priority rtsk) @ \lnot  (Task[log\_context := log\_context \oplus  \{(target?, bare\_context)\}, phys\_context := log\_context topReady!, topReady!/running\_task, state := state \oplus  (\{(target?, nonexistent)\} \cup  \{(topReady!, running)\}), tasks := tasks \setminus  \{target?\}] \land  (st \in  TASK \land  \lnot  (state \oplus  (\{(target?, nonexistent)\} \cup  \{(topReady!, running)\})) st = state st \implies  (state st, (state \oplus  (\{(target?, nonexistent)\} \cup  \{(topReady!, running)\})) st) \in  transition) \implies  t \in  TASK \land  state t = ready \land  \lnot  priority topReady! \geq  priority t)
+\end{theorem}
+
+\begin{zproof}[lDeleteTaskS\_T\_Lemma]
+prove by reduce;
+apply extensionality to predicate state \inv  \limg  \{running\} \rimg  = \{running\_task\};
+apply extensionality to predicate TASK \setminus  (\{target?\} \cup  (state \inv  \limg  \{nonexistent\} \rimg )) = TASK \setminus  ((state \oplus  (\{(target?, nonexistent)\} \cup  \{(topReady!, running)\})) \inv  \limg  \{nonexistent\} \rimg );
+apply extensionality to predicate (state \oplus  (\{(target?, nonexistent)\} \cup  \{(topReady!, running)\})) \inv  \limg  \{running\} \rimg  = \{topReady!\};
+prove;
+with enabled (applyOverride) prove;
+instantiate x == target?;
+cases;
+with normalization prove;
+next;
+instantiate x\_\_0 == x;
+with enabled (applyOverride) with normalization prove;
+next;
+split state idle = running;
+prove;
+next;
+instantiate rtsk == pt;
+with enabled (applyOverride) with normalization prove;
+next;
+split st = running\_task;
+prove;
+next;
+instantiate rtsk == t;
+prove;
+next;
+\end{zproof}
+
+\begin{theorem}{DeleteTaskS\_T\_vc\_ref}
+\forall  DeleteTaskS\_TFSBSig | true @ \pre  DeleteTaskS\_T
+\end{theorem}
+
+\begin{zproof}[DeleteTaskS\_T\_vc\_ref]
+with disabled (Task) prove by reduce;
+instantiate running\_task' == topReady!;
+prove;
+use lDeleteTaskS\_T\_Lemma;
+prove;
+instantiate t\_\_0 == rtsk;
+prove;
+\end{zproof}
+
+\begin{zed}
+DeleteTask\_T \defs DeleteTaskN\_T \lor DeleteTaskS\_T
+\end{zed}
+
+\begin{schema}{ExecuteRunningTask\_T}
+  \Delta Task\\
+  target!: TASK
+\where
+  \Xi TaskData\\
+  \Xi StateData\\
+  phys\_context' \neq  phys\_context\\
+  log\_context' = log\_context\\
+  \Xi PrioData\\
+  target! = running\_task
+\end{schema}
+
+\begin{schema}{ExecuteRunningTask\_TFSBSig}
+  Task
+\where
+  \exists  phys\_context': CONTEXT @ phys\_context' \neq  phys\_context
+\end{schema}
+
+\begin{theorem}{ExecuteRunningTask\_T\_vc\_ref}
+\forall  ExecuteRunningTask\_TFSBSig | true @ \pre  ExecuteRunningTask\_T
+\end{theorem}
+
+\begin{zproof}[ExecuteRunningTask\_T\_vc\_ref]
+with disabled (TaskData, StateData, PrioData) prove by reduce;
+\end{zproof}
+
+\begin{schema}{SuspendTaskN\_T}
+  \Delta Task\\
+  target?: TASK\\
+  topReady!: TASK
+\where
+  target? \in  tasks \setminus  \{idle\}\\
+  state(target?) \in  \{ready, blocked\}\\
+  \Xi TaskData\\
+  state' = state \oplus  \{(target? \mapsto  suspended)\}\\
+  \Xi ContextData\\
+  \Xi PrioData\\
+  topReady! = running\_task
+\end{schema}
+
+\begin{schema}{SuspendTaskN\_TFSBSig}
+  Task\\
+  target?: TASK
+\where
+  target? \in  tasks \setminus  \{idle\}\\
+  state(target?) \in  \{ready, blocked\}
+\end{schema}
+
+\begin{theorem}{SuspendTaskN\_T\_vc\_ref}
+\forall  SuspendTaskN\_TFSBSig | true @ \pre  SuspendTaskN\_T
+\end{theorem}
+
+\begin{zproof}[SuspendTaskN\_T\_vc\_ref]
+prove by reduce;
+apply extensionality to predicate TASK \setminus  (state \inv  \limg  \{nonexistent\} \rimg ) = TASK \setminus  ((state \oplus  \{(target?, suspended)\}) \inv  \limg  \{nonexistent\} \rimg );
+apply extensionality to predicate (state \oplus  \{(target?, suspended)\}) \inv  \limg  \{running\} \rimg  = state \inv  \limg  \{running\} \rimg ;
+instantiate pt\_\_0 == pt;
+prove;
+apply applyOverride;
+prove;
+cases;
+with normalization prove;
+next;
+with normalization prove;
+next;
+with normalization prove;
+next;
+split state target? = ready;
+prove;
+next;
+\end{zproof}
+
+\begin{schema}{SuspendTaskS\_T}
+  \Delta Task\\
+  target?: TASK\\
+  topReady!: TASK
+\where
+  target? \in  tasks \setminus  \{idle\}\\
+  state(target?) \in  \{running\}\\
+  state(topReady!) = ready\\
+  \forall  t: state \inv  \limg  \{ready\} \rimg  @ priority(topReady!) \geq  priority(t)\\
+  \exists  st?: STATE | st? = suspended @ Reschedule[tasks/tasks?, priority/pri?, topReady!/target?]
+\end{schema}
+
+\begin{theorem}{TaskProperty4}
+\forall  Task | SuspendTaskS\_T @ state' running\_task = suspended \land  (\forall  t: state \inv  \limg  \{ready\} \rimg  @ priority running\_task' \geq  priority t)
+\end{theorem}
+
+\begin{zproof}[TaskProperty4]
+with disabled (\Delta Task, Task) prove by reduce;
+use TaskProperty3[t := topReady!];
+instantiate t\_\_0 == t;
+prove;
+\end{zproof}
+
+\begin{theorem}{TaskProperty5}
+\forall  Task @ \forall  t: TASK | t \notin  tasks @ state t = nonexistent
+\end{theorem}
+
+\begin{zproof}[TaskProperty5]
+prove by reduce;
+\end{zproof}
+
+\begin{schema}{SuspendTaskS\_TFSBSig}
+  Task\\
+  target?: TASK
+\where
+  target? \in  tasks \setminus  \{idle\}\\
+  state(target?) \in  \{running\}\\
+  \exists topReady!: state \inv \limg \{ready\} \rimg @  (\forall  t: state \inv  \limg  \{ready\} \rimg  @ priority(topReady!) \geq  priority(t))
+\end{schema}
+
+\begin{theorem}{lSuspendTaskS\_T\_Lemma}
+\forall  Task; target?, topReady!: TASK | target? \in  tasks \setminus  \{idle\} \land  state target? \in  \{running\} \land  state topReady! = ready \land  (\forall  rtsk: state \inv  \limg  \{ready\} \rimg  @ priority topReady! \geq  priority rtsk) @ \lnot  (Task[log\_context := log\_context \oplus  \{(running\_task, phys\_context)\}, phys\_context := log\_context topReady!, topReady!/running\_task, state := state \oplus  (\{(running\_task, suspended)\} \cup  \{(topReady!, running)\})] \land  (st \in  TASK \land  \lnot  (state \oplus  (\{(running\_task, suspended)\} \cup  \{(topReady!, running)\})) st = state st \implies  (state st, (state \oplus  (\{(running\_task, suspended)\} \cup  \{(topReady!, running)\})) st) \in  transition) \implies  t \in  TASK \land  state t = ready \land  \lnot  priority topReady! \geq  priority t)
+\end{theorem}
+
+\begin{zproof}[lSuspendTaskS\_T\_Lemma]
+prove by reduce;
+apply extensionality to predicate state \inv  \limg  \{running\} \rimg  = \{running\_task\};
+apply extensionality to predicate TASK \setminus  (state \inv  \limg  \{nonexistent\} \rimg ) = TASK \setminus  ((state \oplus  (\{(running\_task, suspended)\} \cup  \{(topReady!, running)\})) \inv  \limg  \{nonexistent\} \rimg );
+apply extensionality to predicate (state \oplus  (\{(running\_task, suspended)\} \cup  \{(topReady!, running)\})) \inv  \limg  \{running\} \rimg  = \{topReady!\};
+prove;
+with enabled (applyOverride) prove;
+instantiate x\_\_1 == target?;
+cases;
+with normalization prove;
+next;
+with normalization prove;
+next;
+instantiate x\_\_1 == x\_\_0;
+with enabled (applyOverride) with normalization prove;
+next;
+with normalization prove;
+next;
+instantiate rtsk == pt;
+with normalization prove;
+next;
+split st = running\_task;
+prove;
+next;
+instantiate rtsk == t;
+prove;
+next;
+\end{zproof}
+
+\begin{theorem}{SuspendTaskS\_T\_vc\_ref}
+\forall  SuspendTaskS\_TFSBSig | true @ \pre  SuspendTaskS\_T
+\end{theorem}
+
+\begin{zproof}[SuspendTaskS\_T\_vc\_ref]
+with disabled (Task) prove by reduce;
+instantiate running\_task' == topReady!;
+prove;
+use lSuspendTaskS\_T\_Lemma;
+prove;
+instantiate t\_\_0 == rtsk;
+prove;
+\end{zproof}
+
+\begin{schema}{SuspendTaskO\_T}
+  \Xi Task\\
+  target?: TASK\\
+  topReady!: TASK
+\where
+  state(target?) \in  \{suspended\}\\
+  topReady! = running\_task
+\end{schema}
+
+\begin{schema}{SuspendTaskO\_TFSBSig}
+  Task\\
+  target?: TASK\\
+  topReady!: TASK
+\where
+  state(target?) \in  \{suspended\}
+\end{schema}
+
+\begin{theorem}{SuspendTaskO\_T\_vc\_ref}
+\forall  SuspendTaskO\_TFSBSig | true @ \pre  SuspendTaskO\_T
+\end{theorem}
+
+\begin{zproof}[SuspendTaskO\_T\_vc\_ref]
+prove by reduce;
+\end{zproof}
+
+
+\begin{zed}
+SuspendTask\_T \defs SuspendTaskN\_T \lor SuspendTaskS\_T
+                \lor SuspendTaskO\_T
+\end{zed}
+
+
+\begin{schema}{ResumeTaskN\_T}
+  \Delta Task\\
+  target?: TASK
+\where
+  state(target?) = suspended\\
+  priority(target?) \leq  priority(running\_task)\\
+  \Xi TaskData\\
+  state' = state \oplus  \{(target? \mapsto  ready)\}\\
+  \Xi ContextData\\
+  \Xi PrioData
+\end{schema}
+
+\begin{schema}{ResumeTaskN\_TFSBSig}
+  Task\\
+  target?: TASK
+\where
+  state(target?) = suspended\\
+  priority(target?) \leq  priority(running\_task)
+\end{schema}
+
+\begin{theorem}{ResumeTaskN\_T\_vc\_ref}
+\forall  ResumeTaskN\_TFSBSig | true @ \pre  ResumeTaskN\_T
+\end{theorem}
+
+\begin{zproof}[ResumeTaskN\_T\_vc\_ref]
+prove by reduce;
+apply extensionality to predicate TASK \setminus  (state \inv  \limg  \{nonexistent\} \rimg ) = TASK \setminus  ((state \oplus  \{(target?, ready)\}) \inv  \limg  \{nonexistent\} \rimg );
+apply extensionality to predicate (state \oplus  \{(target?, ready)\}) \inv  \limg  \{running\} \rimg  = state \inv  \limg  \{running\} \rimg ;
+with enabled (applyOverride) prove;
+apply applyOverride;
+instantiate pt\_\_0 == pt;
+with normalization prove;
+\end{zproof}
+
+\begin{schema}{ResumeTaskS\_T}
+  \Delta Task\\
+  target?: TASK
+\where
+  state(target?) = suspended\\
+  priority(target?) > priority(running\_task)\\
+  \exists  st?: STATE | st? = ready @ Reschedule[tasks/tasks?, priority/pri?]
+\end{schema}
+
+\begin{schema}{ResumeTaskS\_TFSBSig}
+  Task\\
+  target?: TASK
+\where
+  state(target?) = suspended\\
+  priority(target?) > priority(running\_task)
+\end{schema}
+
+\begin{theorem}{ResumeTaskS\_T\_vc\_ref}
+\forall  ResumeTaskS\_TFSBSig | true @ \pre  ResumeTaskS\_T
+\end{theorem}
+
+\begin{zproof}[ResumeTaskS\_T\_vc\_ref]
+prove by reduce;
+apply extensionality to predicate TASK \setminus  ((state \oplus  (\{(running\_task, ready)\} \cup  \{(target?, running)\})) \inv  \limg  \{nonexistent\} \rimg ) = TASK \setminus  (state \inv  \limg  \{nonexistent\} \rimg );
+apply extensionality to predicate state \inv  \limg  \{running\} \rimg  = \{running\_task\};
+apply extensionality to predicate (state \oplus  (\{(running\_task, ready)\} \cup  \{(target?, running)\})) \inv  \limg  \{running\} \rimg  = \{target?\};
+prove;
+apply applyOverride;
+instantiate x\_\_1 == x\_\_0;
+instantiate pt\_\_0 == pt;
+cases;
+with normalization prove;
+next;
+with normalization prove;
+next;
+with normalization prove;
+next;
+with normalization prove;
+next;
+with normalization prove;
+next;
+with normalization prove;
+next;
+split st = running\_task;
+prove;
+next;
+\end{zproof}
+
+\begin{zed}
+ResumeTask\_T \defs ResumeTaskN\_T \lor ResumeTaskS\_T
+\end{zed}
+
+
+\begin{schema}{ChangeTaskPriorityN\_T}
+  \Delta Task\\
+  newpri?: \nat \\
+  target?: TASK\\
+  topReady!: TASK
+\where
+  state(target?) = ready \implies  newpri? \leq  priority(running\_task)\\
+  state(target?) = running \implies  (\forall  t: state \inv  \limg  \{ready\} \rimg  @ newpri? \geq  priority(t))\\
+  state(target?) \neq  nonexistent\\
+  target? = idle \implies  newpri? = 0\\
+  \Xi TaskData\\
+  \Xi StateData\\
+  \Xi ContextData\\
+  priority' = priority \oplus  \{(target? \mapsto  newpri?)\}\\
+  topReady! = running\_task
+\end{schema}
+
+\begin{schema}{ChangeTaskPriorityN\_TFSBSig}
+  Task\\
+  newpri?: \nat \\
+  target?: TASK
+\where
+  state(target?) = ready \implies  newpri? \leq  priority(running\_task)\\
+  state(target?) = running \implies  (\forall  t: state \inv  \limg  \{ready\} \rimg  @ newpri? \geq  priority(t))\\
+  state(target?) \neq  nonexistent\\
+  target? = idle \implies  newpri? = 0
+\end{schema}
+
+\begin{theorem}{ChangeTaskPriorityN\_T\_vc\_ref}
+\forall  ChangeTaskPriorityN\_TFSBSig | true @ \pre  ChangeTaskPriorityN\_T
+\end{theorem}
+
+\begin{zproof}[ChangeTaskPriorityN\_T\_vc\_ref]
+with enabled (applyOverride) prove by reduce;
+apply extensionality to predicate state \inv  \limg  \{running\} \rimg  = \{running\_task\};
+instantiate t == pt;
+with normalization prove;
+\end{zproof}
+
+\begin{schema}{ChangeTaskPriorityS\_T}
+  \Delta Task\\
+  target?: TASK\\
+  newpri?: \nat \\
+  topReady!: TASK
+\where
+  state(target?) = ready\\
+  newpri? > priority(running\_task)\\
+  target? = idle \implies  newpri? = 0\\
+  \exists  st?: STATE; pri?: TASK \fun  \nat  | st? = ready \land  pri? = priority \oplus  \{(target? \mapsto  newpri?)\} @ Reschedule[tasks/tasks?]\\
+  topReady! = target?
+\end{schema}
+
+\begin{schema}{ChangeTaskPriorityS\_TFSBSig}
+  Task\\
+  newpri?: \nat \\
+  target?: TASK
+\where
+  state(target?) = ready\\
+  newpri? > priority(running\_task)\\
+  target? = idle \implies  newpri? = 0
+\end{schema}
+
+\begin{theorem}{ChangeTaskPriorityS\_T\_vc\_ref}
+\forall  ChangeTaskPriorityS\_TFSBSig | true @ \pre  ChangeTaskPriorityS\_T
+\end{theorem}
+
+\begin{zproof}[ChangeTaskPriorityS\_T\_vc\_ref]
+prove by reduce;
+apply extensionality to predicate state \inv  \limg  \{running\} \rimg  = \{running\_task\};
+apply extensionality to predicate TASK \setminus  ((state \oplus  (\{(running\_task, ready)\} \cup  \{(target?, running)\})) \inv  \limg  \{nonexistent\} \rimg ) = TASK \setminus  (state \inv  \limg  \{nonexistent\} \rimg );
+apply extensionality to predicate (state \oplus  (\{(running\_task, ready)\} \cup  \{(target?, running)\})) \inv  \limg  \{running\} \rimg  = \{target?\};
+prove;
+with enabled (applyOverride) prove;
+apply applyOverride;
+apply applyCupRight;
+apply applyCupLeft;
+prove;
+instantiate x == x\_\_0;
+instantiate pt\_\_0 == pt;
+cases;
+with normalization reduce;
+next;
+with normalization reduce;
+next;
+with normalization reduce;
+next;
+\end{zproof}
+
+\begin{schema}{ChangeTaskPriorityD\_T}
+  \Delta Task\\
+  target?: TASK\\
+  topReady!: TASK\\
+  newpri?: \nat 
+\where
+  state(target?) = running\\
+  target? = idle \implies  newpri? = 0\\
+  state(topReady!) = ready\\
+  \forall  t: state \inv  \limg  \{ready\} \rimg  @ priority(topReady!) \geq  priority(t)\\
+  newpri? < priority(topReady!)\\
+  \exists  st?: STATE; pri?: TASK \fun  \nat  | st? = ready \land  pri? = priority \oplus  \{(target? \mapsto  newpri?)\} @ Reschedule[tasks/tasks?, topReady!/target?]
+\end{schema}
+
+\begin{schema}{ChangeTaskPriorityD\_TFSBSig}
+  Task\\
+  newpri?: \nat \\
+  target?: TASK
+\where
+  state(target?) = running\\
+  target? = idle \implies  newpri? = 0\\
+  \exists topReady!: state \inv \limg \{ready\} \rimg @  newpri? < priority(topReady!) \land  (\forall  t: state \inv  \limg  \{ready\} \rimg  @ priority(topReady!) \geq  priority(t))
+\end{schema}
+
+\begin{theorem}{lChangeTaskPriorityD\_T\_Lemma}
+\forall  Task; target?, topReady!: TASK; newpri?: \nat | state target? = running \land  (target? = idle \implies  newpri? = 0) \land  state topReady! = ready \land  (\forall  rtsk: state \inv  \limg  \{ready\} \rimg  @ priority topReady! \geq  priority rtsk) \land  newpri? < priority topReady! @ \lnot  (Task[log\_context := log\_context \oplus  \{(running\_task, phys\_context)\}, phys\_context := log\_context topReady!, priority := priority \oplus  \{(target?, newpri?)\}, topReady!/running\_task, state := state \oplus  (\{(running\_task, ready)\} \cup  \{(topReady!, running)\})] \land  (st \in  TASK \land  \lnot  (state \oplus  (\{(running\_task, ready)\} \cup  \{(topReady!, running)\})) st = state st \implies  (state st, (state \oplus  (\{(running\_task, ready)\} \cup  \{(topReady!, running)\})) st) \in  transition) \implies  t \in  TASK \land  state t = ready \land  \lnot  priority topReady! \geq  priority t)
+\end{theorem}
+
+\begin{zproof}[lChangeTaskPriorityD\_T\_Lemma]
+prove by reduce;
+apply extensionality to predicate state \inv  \limg  \{running\} \rimg  = \{running\_task\};
+apply extensionality to predicate TASK \setminus  (state \inv  \limg  \{nonexistent\} \rimg ) = TASK \setminus  ((state \oplus  (\{(running\_task, ready)\} \cup  \{(topReady!, running)\})) \inv  \limg  \{nonexistent\} \rimg );
+apply extensionality to predicate (state \oplus  (\{(running\_task, ready)\} \cup  \{(topReady!, running)\})) \inv  \limg  \{running\} \rimg  = \{topReady!\};
+prove;
+with enabled (applyOverride) prove;
+instantiate x\_\_1 == target?;
+cases;
+with normalization reduce;
+next;
+with normalization reduce;
+next;
+instantiate x\_\_1 == x\_\_0;
+with enabled (applyOverride) with normalization prove;
+next;
+with normalization reduce;
+next;
+instantiate rtsk == pt;
+with normalization reduce;
+next;
+with normalization reduce;
+next;
+instantiate rtsk == t;
+prove;
+next;
+\end{zproof}
+
+\begin{theorem}{ChangeTaskPriorityD\_T\_vc\_ref}
+\forall  ChangeTaskPriorityD\_TFSBSig | true @ \pre  ChangeTaskPriorityD\_T
+\end{theorem}
+
+\begin{zproof}[ChangeTaskPriorityD\_T\_vc\_ref]
+with disabled (Task) prove by reduce;
+instantiate running\_task' == topReady!;
+prove;
+use lChangeTaskPriorityD\_T\_Lemma;
+prove;
+instantiate t\_\_0 == rtsk;
+instantiate t\_\_0 == t;
+prove;
+\end{zproof}
+
+\begin{zed}
+ChangeTaskPriority\_T \defs ChangeTaskPriorityN\_T
+                       \lor ChangeTaskPriorityS\_T
+                       \lor ChangeTaskPriorityD\_T
+\end{zed}
+
+\begin{theorem}{CaseStudyStep1}
+\forall  Task; target?: TASK; newpri?: \nat  | tasks = \{idle\} \land  running\_task = idle \land  newpri? = 1 \land  CreateTask\_T @ target? \in  tasks' \land  state' target? = running \land  priority' target? = 1
+\end{theorem}
+
+\begin{zproof}[CaseStudyStep1]
+with disabled (CreateTaskS\_T, StateData, TaskData, ContextData) reduce;
+prove by reduce;
+\end{zproof}
+
+\begin{theorem}{CaseStudyStep3}
+\forall  Task; target?: TASK; newpri?: \nat  | tasks = \{idle, Task1, Task2\} \land  priority Task1 = 1 \land  priority Task2 = 2 \land  state Task1 = ready \land  running\_task = Task2 \land  target? = Task1 \land  newpri? = 3 \land  ChangeTaskPriority\_T @ priority' Task1 = 3 \land  running\_task' = Task1
+\end{theorem}
+
+\begin{zproof}[CaseStudyStep3]
+with disabled (Task, ChangeTaskPriorityS\_T) prove by reduce;
+prove by reduce;
+\end{zproof}
+
+\begin{theorem}{CaseStudyStep5}
+\forall  Task; Task1, Task2, Task3, target?: TASK | tasks = \{idle, Task1, Task2, Task3\} \land  priority Task1 = 3 \land  priority Task2 = 2 \land  priority Task3 = 4 \land  state Task1 = ready \land  state Task2 = ready \land  state Task3 = running \land  target? = Task3 \land  DeleteTask\_T @ state' Task3 = nonexistent \land  Task3 \notin  tasks' \land  running\_task' = Task1
+\end{theorem}
+
+\begin{zproof}[CaseStudyStep5]
+with disabled (Task, DeleteTaskS\_T) reduce;
+invoke Task;
+invoke DeleteTaskS\_T;
+apply extensionality to predicate tasks = TASK \setminus  (state \inv  \limg  \{nonexistent\} \rimg );
+instantiate y == topReady!;
+instantiate t == Task1;
+invoke PrioData;
+split topReady! = idle;
+prove;
+\end{zproof}
+
+
+\end{document}
+
