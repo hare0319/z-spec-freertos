@@ -1,45 +1,47 @@
-<Z-EVES-GUI-State version="1" index="0"><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:1" history="2"><zed-box>   [CONTEXT, TASK] </zed-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:2" history="3"><axiomatic-box><decl-part/>   bare_context: CONTEXT
+<Z-EVES-GUI-State version="1" index="5"><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:1" history="2"><zed-box>   [CONTEXT, TASK] </zed-box></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:2" history="3"><axiomatic-box><decl-part/>   bare_context: CONTEXT
   idle: TASK </axiomatic-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:3" history="4"><zed-box> STATE ::= nonexistent | ready | blocked | suspended | running </zed-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:4" history="5"><zed-box ability="disabled">  transition == ({blocked}&cross;{nonexistent, ready, running, suspended}) &cup;({nonexistent}&cross;{ready, running}) &cup;({ready}&cross;{nonexistent, running, suspended}) &cup;({running}&cross;{blocked, nonexistent, ready, suspended}) &cup;({suspended}&cross;{nonexistent, ready, running}) </zed-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:5" history="6"><theorem-def usage="grule">gTransitionType<ax-part/> transition &isin;&Popf;(STATE &cross;STATE) </theorem-def></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:6" history="7"><theorem-def usage="rule">lInTransition<ax-part/> &forall;l, r: STATE | (l, r) &isin;{nonexistent &rtarr;ready, running &rtarr;ready, blocked &rtarr;ready, suspended &rtarr;ready, ready &rtarr;running, blocked &rtarr;running, suspended &rtarr;running, nonexistent &rtarr;running, running &rtarr;suspended, ready &rtarr;suspended, blocked &rtarr;suspended, running &rtarr;blocked, running &rtarr;nonexistent, ready &rtarr;nonexistent, blocked &rtarr;nonexistent, suspended &rtarr;nonexistent}&bullet; (l, r) &isin;transition </theorem-def></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:7" history="8"><schema-box>TaskData<decl-part/>   tasks: &Popf;TASK
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:3" history="4"><zed-box> STATE ::= nonexistent | ready | blocked | suspended | running </zed-box></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:4" history="5"><zed-box ability="disabled">  transition == ({blocked}&cross;{nonexistent, ready, running, suspended}) &cup;({nonexistent}&cross;{ready, running}) &cup;({ready}&cross;{nonexistent, running, suspended}) &cup;({running}&cross;{blocked, nonexistent, ready, suspended}) &cup;({suspended}&cross;{nonexistent, ready, running}) </zed-box></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:5" history="6"><theorem-def usage="grule">gTransitionType<ax-part/> transition &isin;&Popf;(STATE &cross;STATE) </theorem-def></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:6" history="7"><theorem-def usage="rule">lInTransition<ax-part/> &forall;l, r: STATE | (l, r) &isin;{nonexistent &rtarr;ready, running &rtarr;ready, blocked &rtarr;ready, suspended &rtarr;ready, ready &rtarr;running, blocked &rtarr;running, suspended &rtarr;running, nonexistent &rtarr;running, running &rtarr;suspended, ready &rtarr;suspended, blocked &rtarr;suspended, running &rtarr;blocked, running &rtarr;nonexistent, ready &rtarr;nonexistent, blocked &rtarr;nonexistent, suspended &rtarr;nonexistent}&bullet; (l, r) &isin;transition </theorem-def></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:7" history="8"><schema-box>TaskData<decl-part/>   tasks: &Popf;TASK
   running_task: TASK <ax-part/>  running_task &isin;tasks
   idle &isin;tasks </schema-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:8" history="9"><schema-box>Init_TaskData<decl-part/>   TaskData' <ax-part/>  tasks' = {idle}
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:8" history="9"><schema-box>Init_TaskData<decl-part/>   TaskData' <ax-part/>  tasks' = {idle}
   running_task' = idle </schema-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:9" history="10"><theorem-def>TaskDataInit<ax-part/> &exists;TaskData' &bullet; Init_TaskData </theorem-def></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:10" history="11"><schema-box>StateData<decl-part/>   state: TASK &rarr;STATE <ax-part/>  state(idle) &isin;{ready, running}</schema-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:11" history="12"><schema-box>Init_StateData<decl-part/>   StateData' <ax-part/>  state' = (&lambda;x: TASK &bullet; nonexistent) &oplus;{(idle &rtarr;running)}</schema-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:12" history="13"><theorem-def>StateDataInit<ax-part/> &exists;StateData' &bullet; Init_StateData </theorem-def></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:13" history="14"><schema-box>ContextData<decl-part/>   phys_context: CONTEXT
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:9" history="10"><theorem-def>TaskDataInit<ax-part/> &exists;TaskData' &bullet; Init_TaskData </theorem-def></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:10" history="11"><schema-box>StateData<decl-part/>   state: TASK &rarr;STATE <ax-part/>  state(idle) &isin;{ready, running}</schema-box></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:11" history="12"><schema-box>Init_StateData<decl-part/>   StateData' <ax-part/>  state' = (&lambda;x: TASK &bullet; nonexistent) &oplus;{(idle &rtarr;running)}</schema-box></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:12" history="13"><theorem-def>StateDataInit<ax-part/> &exists;StateData' &bullet; Init_StateData </theorem-def></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:13" history="14"><schema-box>ContextData<decl-part/>   phys_context: CONTEXT
   log_context: TASK &rarr;CONTEXT </schema-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:14" history="15"><schema-box>Init_ContextData<decl-part/>   ContextData' <ax-part/>  phys_context' = bare_context
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:14" history="15"><schema-box>Init_ContextData<decl-part/>   ContextData' <ax-part/>  phys_context' = bare_context
   log_context' = (&lambda;x: TASK &bullet; bare_context) </schema-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:15" history="16"><theorem-def>ContextDataInit<ax-part/> &exists;ContextData' &bullet; Init_ContextData </theorem-def></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:16" history="17"><schema-box>PrioData<decl-part/>   priority: TASK &rarr;&Nopf;<ax-part/>  priority(idle) = 0 </schema-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:17" history="18"><schema-box>Init_PrioData<decl-part/>   PrioData' <ax-part/>  priority' = (&lambda;x: TASK &bullet; 0) </schema-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:18" history="19"><theorem-def>PrioDataInit<ax-part/> &exists;PrioData' &bullet; Init_PrioData </theorem-def></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:19" history="20"><schema-box>Task<decl-part/>   TaskData
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:15" history="16"><theorem-def>ContextDataInit<ax-part/> &exists;ContextData' &bullet; Init_ContextData </theorem-def></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:16" history="17"><schema-box>PrioData<decl-part/>   priority: TASK &rarr;&Nopf;<ax-part/>  priority(idle) = 0 </schema-box></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:17" history="18"><schema-box>Init_PrioData<decl-part/>   PrioData' <ax-part/>  priority' = (&lambda;x: TASK &bullet; 0) </schema-box></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:18" history="19"><theorem-def>PrioDataInit<ax-part/> &exists;PrioData' &bullet; Init_PrioData </theorem-def></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:19" history="20"><schema-box>Task<decl-part/>   TaskData
   StateData
   ContextData
   PrioData <ax-part/>  tasks = TASK \(state &suptilde;&lvparen;{nonexistent}&rvparen;)
   state &suptilde;&lvparen;{running}&rvparen;= {running_task}
   &forall;pt: state &suptilde;&lvparen;{ready}&rvparen;&bullet; priority(running_task)&geq;priority(pt) </schema-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:20" history="21"><schema-box>&Delta;Task<decl-part/>   Task
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:20" history="21"><schema-box>&Delta;Task<decl-part/>   Task
   Task' <ax-part/>  &forall;st: TASK | state'(st) &neq;state(st) &bullet; state(st) &rtarr;state'(st) &isin;transition </schema-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:21" history="22"><theorem-def>TaskProperty1<ax-part/> &forall;Task &bullet; state(running_task) = running </theorem-def></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:22" history="23"><theorem-def>TaskProperty2<ax-part/> &forall;Task &bullet; &forall;t: TASK | t &isin;state &suptilde;&lvparen;{blocked}&rvparen;&bullet; t &isin;tasks </theorem-def></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:23" history="24"><theorem-def>TaskProperty3<ax-part/> &forall;Task &bullet; &forall;t: state &suptilde;&lvparen;{ready}&rvparen;&bullet; t &isin;tasks \{running_task}</theorem-def></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:24" history="25"><theorem-def>TaskProperty6<ax-part/> &forall;Task; t: TASK | 0 &lt; priority(t) &bullet; idle &neq;t </theorem-def></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:25" history="26"><schema-box>Init_Task<decl-part/>    Task' <ax-part/>  Init_TaskData
+><textItem location="gui::1" history="22"><axiomatic-box location="gui::1"><decl-part/>f: &Popf; TASK &rarrb; TASK<ax-part/>  &empty; &notin; <word style="roman"/>dom<word/> f
+&lchev;topReadyTask&rchev;&forall; Task; a: &Popf; TASK &bullet; a &isin; <word style="roman"/>dom<word/> f &wedge; f(a) &isin; a &wedge; (&forall;t: a &bullet; priority(f(a)) &geq; priority(t))</axiomatic-box></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:21" history="23"><theorem-def>TaskProperty1<ax-part/> &forall;Task &bullet; state(running_task) = running </theorem-def></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:22" history="24"><theorem-def>TaskProperty2<ax-part/> &forall;Task &bullet; &forall;t: TASK | t &isin;state &suptilde;&lvparen;{blocked}&rvparen;&bullet; t &isin;tasks </theorem-def></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:23" history="25"><theorem-def>TaskProperty3<ax-part/> &forall;Task &bullet; &forall;t: state &suptilde;&lvparen;{ready}&rvparen;&bullet; t &isin;tasks \{running_task}</theorem-def></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:24" history="26"><theorem-def>TaskProperty6<ax-part/> &forall;Task; t: TASK | 0 &lt; priority(t) &bullet; idle &neq;t </theorem-def></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:25" history="27"><schema-box>Init_Task<decl-part/>    Task' <ax-part/>  Init_TaskData
   Init_StateData
   Init_ContextData
   Init_PrioData </schema-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:26" history="27"><theorem-def>TaskInit<ax-part/> &exists;Task' &bullet; Init_Task </theorem-def></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:27" history="28"><schema-box>Reschedule<decl-part/>   &Delta;Task
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:26" history="28"><theorem-def>TaskInit<ax-part/> &exists;Task' &bullet; Init_Task </theorem-def></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:27" history="29"><schema-box>Reschedule<decl-part/>   &Delta;Task
   target?: TASK
   tasks?: &Popf;TASK
   st?: STATE
@@ -49,8 +51,8 @@
   phys_context' = log_context(target?)
   log_context' = log_context &oplus;{(running_task &rtarr;phys_context)}
   priority' = pri? </schema-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:28" history="29"><zed-box> disableReschedule &eqhat;[Task | false] &wedge;Reschedule </zed-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:29" history="30"><schema-box>CreateTaskN_T<decl-part/>   &Delta;Task
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:28" history="30"><zed-box> disableReschedule &eqhat;[Task | false] &wedge;Reschedule </zed-box></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:29" history="31"><schema-box>CreateTaskN_T<decl-part/>   &Delta;Task
   target?: TASK
   newpri?: &Nopf;<ax-part/>  state(target?) = nonexistent
   newpri? &leq;priority(running_task)
@@ -59,23 +61,23 @@
   state' = state &oplus;{(target? &rtarr;ready)}
   &Xi;ContextData
   priority' = priority &oplus;{(target? &rtarr;newpri?)}</schema-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:30" history="31"><schema-box>CreateTaskN_TFSBSig<decl-part/>   Task
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:30" history="32"><schema-box>CreateTaskN_TFSBSig<decl-part/>   Task
   target?: TASK 
   newpri?: &Nopf;<ax-part/>  state(target?) = nonexistent
   newpri? &leq;priority(running_task) </schema-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:31" history="32"><theorem-def>CreateTaskN_T_vc_ref<ax-part/> &forall;CreateTaskN_TFSBSig | true &bullet; <word style="roman"/>pre<word/> CreateTaskN_T </theorem-def></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:32" history="33"><schema-box>CreateTaskS_T<decl-part/>   &Delta;Task
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:31" history="33"><theorem-def>CreateTaskN_T_vc_ref<ax-part/> &forall;CreateTaskN_TFSBSig | true &bullet; <word style="roman"/>pre<word/> CreateTaskN_T </theorem-def></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:32" history="34"><schema-box>CreateTaskS_T<decl-part/>   &Delta;Task
   target?: TASK
   newpri?: &Nopf;<ax-part/>  state(target?) = nonexistent
   newpri? &gt; priority(running_task)
   &exists;st?: STATE; tasks?: &Popf;TASK; pri?: TASK &rarr;&Nopf;| st? = ready &wedge;tasks? = tasks &cup;{target?}&wedge;pri? = priority &oplus;{(target? &rtarr;newpri?)}&bullet; Reschedule </schema-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:33" history="34"><schema-box>CreateTaskS_TFSBSig<decl-part/>   Task
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:33" history="35"><schema-box>CreateTaskS_TFSBSig<decl-part/>   Task
   target?: TASK 
   newpri?: &Nopf;<ax-part/>  state(target?) = nonexistent
   newpri? &gt; priority(running_task) </schema-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:34" history="35"><theorem-def>CreateTaskS_T_vc_ref<ax-part/> &forall;CreateTaskS_TFSBSig | true &bullet; <word style="roman"/>pre<word/> CreateTaskS_T </theorem-def></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:35" history="36"><zed-box> CreateTask_T &eqhat;CreateTaskN_T &vee;CreateTaskS_T </zed-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:36" history="37"><schema-box>DeleteTaskN_T<decl-part/>   &Delta;Task
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:34" history="36"><theorem-def>CreateTaskS_T_vc_ref<ax-part/> &forall;CreateTaskS_TFSBSig | true &bullet; <word style="roman"/>pre<word/> CreateTaskS_T </theorem-def></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:35" history="37"><zed-box> CreateTask_T &eqhat;CreateTaskN_T &vee;CreateTaskS_T </zed-box></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:36" history="38"><schema-box>DeleteTaskN_T<decl-part/>   &Delta;Task
   target?: TASK
   topReady!: TASK <ax-part/>  target? &isin;tasks \{idle}
   state(target?) &isin;{ready, blocked, suspended}
@@ -86,11 +88,11 @@
   log_context' = log_context &oplus;{(target? &rtarr;bare_context)}
   &Xi;PrioData
   topReady! = running_task </schema-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:37" history="38"><schema-box>DeleteTaskN_TFSBSig<decl-part/>   Task
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:37" history="39"><schema-box>DeleteTaskN_TFSBSig<decl-part/>   Task
   target?: TASK <ax-part/>  target? &isin;tasks \{idle}
   state(target?) &isin;{ready, blocked, suspended}</schema-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:38" history="39"><theorem-def>DeleteTaskN_T_vc_ref<ax-part/> &forall;DeleteTaskN_TFSBSig | true &bullet; <word style="roman"/>pre<word/> DeleteTaskN_T </theorem-def></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:39" history="40"><schema-box>DeleteTaskS_T<decl-part/>   &Delta;Task
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:38" history="40"><theorem-def>DeleteTaskN_T_vc_ref<ax-part/> &forall;DeleteTaskN_TFSBSig | true &bullet; <word style="roman"/>pre<word/> DeleteTaskN_T </theorem-def></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:39" history="41"><schema-box>DeleteTaskS_T<decl-part/>   &Delta;Task
   target?: TASK
   topReady!: TASK <ax-part/>  target? &isin;tasks \{idle}
   state(target?) &isin;{running}
@@ -102,23 +104,23 @@
   phys_context' = log_context(topReady!)
   log_context' = log_context &oplus;{(target? &rtarr;bare_context)}
   &Xi;PrioData </schema-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:40" history="41"><schema-box>DeleteTaskS_TFSBSig<decl-part/>   Task
-  target?: TASK <ax-part/>  target? &isin;tasks \{idle}
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:40" history="42"><schema-box location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:40">DeleteTaskS_TFSBSig<decl-part/>    Task
+  target?: TASK <ax-part/>   target? &isin;tasks \{idle}
   state(target?) &isin;{running}
-  &exists;topReady!: state &suptilde;&lvparen;{ready}&rvparen;&bullet; (&forall;t: state &suptilde;&lvparen;{ready}&rvparen;&bullet; priority(topReady!) &geq;priority(t)) </schema-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:41" history="42"><theorem-def>lDeleteTaskS_T_Lemma<ax-part/> &forall;Task; topReady!, target?: TASK | target? &isin;tasks \{idle}&wedge;state target? &isin;{running}&wedge;state topReady! = ready &wedge;(&forall;rtsk: state &suptilde;&lvparen;{ready}&rvparen;&bullet; priority topReady! &geq;priority rtsk) &bullet; &not;(Task[log_context := log_context &oplus;{(target?, bare_context)}, phys_context := log_context topReady!, topReady!/running_task, state := state &oplus;({(target?, nonexistent)}&cup;{(topReady!, running)}), tasks := tasks \{target?}] &wedge;(st &isin;TASK &wedge;&not;(state &oplus;({(target?, nonexistent)}&cup;{(topReady!, running)})) st = state st &rArr;(state st, (state &oplus;({(target?, nonexistent)}&cup;{(topReady!, running)})) st) &isin;transition) &rArr;t &isin;TASK &wedge;state t = ready &wedge;&not;priority topReady! &geq;priority t) </theorem-def></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:42" history="43"><theorem-def>DeleteTaskS_T_vc_ref<ax-part/> &forall;DeleteTaskS_TFSBSig | true &bullet; <word style="roman"/>pre<word/> DeleteTaskS_T </theorem-def></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:43" history="44"><zed-box> DeleteTask_T &eqhat;DeleteTaskN_T &vee;DeleteTaskS_T </zed-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:44" history="45"><schema-box>ExecuteRunningTask_T<decl-part/>   &Delta;Task
+ </schema-box></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:41" history="43"><theorem-def>lDeleteTaskS_T_Lemma<ax-part/> &forall;Task; topReady!, target?: TASK | target? &isin;tasks \{idle}&wedge;state target? &isin;{running}&wedge;state topReady! = ready &wedge;(&forall;rtsk: state &suptilde;&lvparen;{ready}&rvparen;&bullet; priority topReady! &geq;priority rtsk) &bullet; &not;(Task[log_context := log_context &oplus;{(target?, bare_context)}, phys_context := log_context topReady!, topReady!/running_task, state := state &oplus;({(target?, nonexistent)}&cup;{(topReady!, running)}), tasks := tasks \{target?}] &wedge;(st &isin;TASK &wedge;&not;(state &oplus;({(target?, nonexistent)}&cup;{(topReady!, running)})) st = state st &rArr;(state st, (state &oplus;({(target?, nonexistent)}&cup;{(topReady!, running)})) st) &isin;transition) &rArr;t &isin;TASK &wedge;state t = ready &wedge;&not;priority topReady! &geq;priority t) </theorem-def></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:42" history="44"><theorem-def>DeleteTaskS_T_vc_ref<ax-part/> &forall;DeleteTaskS_TFSBSig | true &bullet; <word style="roman"/>pre<word/> DeleteTaskS_T </theorem-def></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:43" history="45"><zed-box> DeleteTask_T &eqhat;DeleteTaskN_T &vee;DeleteTaskS_T </zed-box></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:44" history="46"><schema-box>ExecuteRunningTask_T<decl-part/>   &Delta;Task
   target!: TASK <ax-part/>  &Xi;TaskData
   &Xi;StateData
   phys_context' &neq;phys_context
   log_context' = log_context
   &Xi;PrioData
   target! = running_task </schema-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:45" history="46"><schema-box>ExecuteRunningTask_TFSBSig<decl-part/>   Task <ax-part/>  &exists;phys_context': CONTEXT &bullet; phys_context' &neq;phys_context </schema-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:46" history="47"><theorem-def>ExecuteRunningTask_T_vc_ref<ax-part/> &forall;ExecuteRunningTask_TFSBSig | true &bullet; <word style="roman"/>pre<word/> ExecuteRunningTask_T </theorem-def></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:47" history="48"><schema-box>SuspendTaskN_T<decl-part/>   &Delta;Task
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:45" history="47"><schema-box>ExecuteRunningTask_TFSBSig<decl-part/>   Task <ax-part/>  &exists;phys_context': CONTEXT &bullet; phys_context' &neq;phys_context </schema-box></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:46" history="48"><theorem-def>ExecuteRunningTask_T_vc_ref<ax-part/> &forall;ExecuteRunningTask_TFSBSig | true &bullet; <word style="roman"/>pre<word/> ExecuteRunningTask_T </theorem-def></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:47" history="49"><schema-box>SuspendTaskN_T<decl-part/>   &Delta;Task
   target?: TASK
   topReady!: TASK <ax-part/>  target? &isin;tasks \{idle}
   state(target?) &isin;{ready, blocked}
@@ -127,55 +129,55 @@
   &Xi;ContextData
   &Xi;PrioData
   topReady! = running_task </schema-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:48" history="49"><schema-box>SuspendTaskN_TFSBSig<decl-part/>   Task
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:48" history="50"><schema-box>SuspendTaskN_TFSBSig<decl-part/>   Task
   target?: TASK <ax-part/>  target? &isin;tasks \{idle}
   state(target?) &isin;{ready, blocked}</schema-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:49" history="50"><theorem-def>SuspendTaskN_T_vc_ref<ax-part/> &forall;SuspendTaskN_TFSBSig | true &bullet; <word style="roman"/>pre<word/> SuspendTaskN_T </theorem-def></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:50" history="51"><schema-box>SuspendTaskS_T<decl-part/>   &Delta;Task
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:49" history="51"><theorem-def>SuspendTaskN_T_vc_ref<ax-part/> &forall;SuspendTaskN_TFSBSig | true &bullet; <word style="roman"/>pre<word/> SuspendTaskN_T </theorem-def></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:50" history="52"><schema-box>SuspendTaskS_T<decl-part/>   &Delta;Task
   target?: TASK
   topReady!: TASK <ax-part/>  target? &isin;tasks \{idle}
   state(target?) &isin;{running}
   state(topReady!) = ready
   &forall;t: state &suptilde;&lvparen;{ready}&rvparen;&bullet; priority(topReady!) &geq;priority(t)
   &exists;st?: STATE | st? = suspended &bullet; Reschedule[tasks/tasks?, priority/pri?, topReady!/target?] </schema-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:51" history="52"><theorem-def>TaskProperty4<ax-part/> &forall;Task | SuspendTaskS_T &bullet; state' running_task = suspended &wedge;(&forall;t: state &suptilde;&lvparen;{ready}&rvparen;&bullet; priority running_task' &geq;priority t) </theorem-def></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:52" history="53"><theorem-def>TaskProperty5<ax-part/> &forall;Task &bullet; &forall;t: TASK | t &notin;tasks &bullet; state t = nonexistent </theorem-def></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:53" history="54"><schema-box>SuspendTaskS_TFSBSig<decl-part/>   Task
-  target?: TASK <ax-part/>  target? &isin;tasks \{idle}
-  state(target?) &isin;{running}
-  &exists;topReady!: state &suptilde;&lvparen;{ready}&rvparen;&bullet;  (&forall;t: state &suptilde;&lvparen;{ready}&rvparen;&bullet; priority(topReady!) &geq;priority(t)) </schema-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:54" history="55"><theorem-def>lSuspendTaskS_T_Lemma<ax-part/> &forall;Task; target?, topReady!: TASK | target? &isin;tasks \{idle}&wedge;state target? &isin;{running}&wedge;state topReady! = ready &wedge;(&forall;rtsk: state &suptilde;&lvparen;{ready}&rvparen;&bullet; priority topReady! &geq;priority rtsk) &bullet; &not;(Task[log_context := log_context &oplus;{(running_task, phys_context)}, phys_context := log_context topReady!, topReady!/running_task, state := state &oplus;({(running_task, suspended)}&cup;{(topReady!, running)})] &wedge;(st &isin;TASK &wedge;&not;(state &oplus;({(running_task, suspended)}&cup;{(topReady!, running)})) st = state st &rArr;(state st, (state &oplus;({(running_task, suspended)}&cup;{(topReady!, running)})) st) &isin;transition) &rArr;t &isin;TASK &wedge;state t = ready &wedge;&not;priority topReady! &geq;priority t) </theorem-def></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:55" history="56"><theorem-def>SuspendTaskS_T_vc_ref<ax-part/> &forall;SuspendTaskS_TFSBSig | true &bullet; <word style="roman"/>pre<word/> SuspendTaskS_T </theorem-def></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:56" history="57"><schema-box>SuspendTaskO_T<decl-part/>   &Xi;Task
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:51" history="53"><theorem-def>TaskProperty4<ax-part/> &forall;Task | SuspendTaskS_T &bullet; state' running_task = suspended &wedge;(&forall;t: state &suptilde;&lvparen;{ready}&rvparen;&bullet; priority running_task' &geq;priority t) </theorem-def></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:52" history="54"><theorem-def>TaskProperty5<ax-part/> &forall;Task &bullet; &forall;t: TASK | t &notin;tasks &bullet; state t = nonexistent </theorem-def></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:53" history="55"><schema-box location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:53">SuspendTaskS_TFSBSig<decl-part/> Task
+target?: TASK<ax-part/> target? &isin; tasks \ {idle}
+state target? &isin; {running}
+</schema-box></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:54" history="56"><theorem-def>lSuspendTaskS_T_Lemma<ax-part/> &forall;Task; target?, topReady!: TASK | target? &isin;tasks \{idle}&wedge;state target? &isin;{running}&wedge;state topReady! = ready &wedge;(&forall;rtsk: state &suptilde;&lvparen;{ready}&rvparen;&bullet; priority topReady! &geq;priority rtsk) &bullet; &not;(Task[log_context := log_context &oplus;{(running_task, phys_context)}, phys_context := log_context topReady!, topReady!/running_task, state := state &oplus;({(running_task, suspended)}&cup;{(topReady!, running)})] &wedge;(st &isin;TASK &wedge;&not;(state &oplus;({(running_task, suspended)}&cup;{(topReady!, running)})) st = state st &rArr;(state st, (state &oplus;({(running_task, suspended)}&cup;{(topReady!, running)})) st) &isin;transition) &rArr;t &isin;TASK &wedge;state t = ready &wedge;&not;priority topReady! &geq;priority t) </theorem-def></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:55" history="57"><theorem-def>SuspendTaskS_T_vc_ref<ax-part/> &forall;SuspendTaskS_TFSBSig | true &bullet; <word style="roman"/>pre<word/> SuspendTaskS_T </theorem-def></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:56" history="58"><schema-box>SuspendTaskO_T<decl-part/>   &Xi;Task
   target?: TASK
   topReady!: TASK <ax-part/>  state(target?) &isin;{suspended}
   topReady! = running_task </schema-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:57" history="58"><schema-box>SuspendTaskO_TFSBSig<decl-part/>   Task
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:57" history="59"><schema-box>SuspendTaskO_TFSBSig<decl-part/>   Task
   target?: TASK
   topReady!: TASK <ax-part/>  state(target?) &isin;{suspended}</schema-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:58" history="59"><theorem-def>SuspendTaskO_T_vc_ref<ax-part/> &forall;SuspendTaskO_TFSBSig | true &bullet; <word style="roman"/>pre<word/> SuspendTaskO_T </theorem-def></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:59" history="60"><zed-box> SuspendTask_T &eqhat;SuspendTaskN_T &vee;SuspendTaskS_T                 &vee;SuspendTaskO_T </zed-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:60" history="61"><schema-box>ResumeTaskN_T<decl-part/>   &Delta;Task
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:58" history="60"><theorem-def>SuspendTaskO_T_vc_ref<ax-part/> &forall;SuspendTaskO_TFSBSig | true &bullet; <word style="roman"/>pre<word/> SuspendTaskO_T </theorem-def></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:59" history="61"><zed-box> SuspendTask_T &eqhat;SuspendTaskN_T &vee;SuspendTaskS_T                 &vee;SuspendTaskO_T </zed-box></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:60" history="62"><schema-box>ResumeTaskN_T<decl-part/>   &Delta;Task
   target?: TASK <ax-part/>  state(target?) = suspended
   priority(target?) &leq;priority(running_task)
   &Xi;TaskData
   state' = state &oplus;{(target? &rtarr;ready)}
   &Xi;ContextData
   &Xi;PrioData </schema-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:61" history="62"><schema-box>ResumeTaskN_TFSBSig<decl-part/>   Task
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:61" history="63"><schema-box>ResumeTaskN_TFSBSig<decl-part/>   Task
   target?: TASK <ax-part/>  state(target?) = suspended
   priority(target?) &leq;priority(running_task) </schema-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:62" history="63"><theorem-def>ResumeTaskN_T_vc_ref<ax-part/> &forall;ResumeTaskN_TFSBSig | true &bullet; <word style="roman"/>pre<word/> ResumeTaskN_T </theorem-def></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:63" history="64"><schema-box>ResumeTaskS_T<decl-part/>   &Delta;Task
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:62" history="64"><theorem-def>ResumeTaskN_T_vc_ref<ax-part/> &forall;ResumeTaskN_TFSBSig | true &bullet; <word style="roman"/>pre<word/> ResumeTaskN_T </theorem-def></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:63" history="65"><schema-box>ResumeTaskS_T<decl-part/>   &Delta;Task
   target?: TASK <ax-part/>  state(target?) = suspended
   priority(target?) &gt; priority(running_task)
   &exists;st?: STATE | st? = ready &bullet; Reschedule[tasks/tasks?, priority/pri?] </schema-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:64" history="65"><schema-box>ResumeTaskS_TFSBSig<decl-part/>   Task
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:64" history="66"><schema-box>ResumeTaskS_TFSBSig<decl-part/>   Task
   target?: TASK <ax-part/>  state(target?) = suspended
   priority(target?) &gt; priority(running_task) </schema-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:65" history="66"><theorem-def>ResumeTaskS_T_vc_ref<ax-part/> &forall;ResumeTaskS_TFSBSig | true &bullet; <word style="roman"/>pre<word/> ResumeTaskS_T </theorem-def></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:66" history="67"><zed-box> ResumeTask_T &eqhat;ResumeTaskN_T &vee;ResumeTaskS_T </zed-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:67" history="68"><schema-box>ChangeTaskPriorityN_T<decl-part/>   &Delta;Task
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:65" history="67"><theorem-def>ResumeTaskS_T_vc_ref<ax-part/> &forall;ResumeTaskS_TFSBSig | true &bullet; <word style="roman"/>pre<word/> ResumeTaskS_T </theorem-def></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:66" history="68"><zed-box> ResumeTask_T &eqhat;ResumeTaskN_T &vee;ResumeTaskS_T </zed-box></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:67" history="69"><schema-box>ChangeTaskPriorityN_T<decl-part/>   &Delta;Task
   newpri?: &Nopf;
   target?: TASK
   topReady!: TASK <ax-part/>  state(target?) = ready &rArr;newpri? &leq;priority(running_task)
@@ -187,14 +189,14 @@
   &Xi;ContextData
   priority' = priority &oplus;{(target? &rtarr;newpri?)}
   topReady! = running_task </schema-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:68" history="69"><schema-box>ChangeTaskPriorityN_TFSBSig<decl-part/>   Task
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:68" history="70"><schema-box>ChangeTaskPriorityN_TFSBSig<decl-part/>   Task
   newpri?: &Nopf;
   target?: TASK <ax-part/>  state(target?) = ready &rArr;newpri? &leq;priority(running_task)
   state(target?) = running &rArr;(&forall;t: state &suptilde;&lvparen;{ready}&rvparen;&bullet; newpri? &geq;priority(t))
   state(target?) &neq;nonexistent
   target? = idle &rArr;newpri? = 0 </schema-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:69" history="70"><theorem-def>ChangeTaskPriorityN_T_vc_ref<ax-part/> &forall;ChangeTaskPriorityN_TFSBSig | true &bullet; <word style="roman"/>pre<word/> ChangeTaskPriorityN_T </theorem-def></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:70" history="71"><schema-box>ChangeTaskPriorityS_T<decl-part/>   &Delta;Task
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:69" history="71"><theorem-def>ChangeTaskPriorityN_T_vc_ref<ax-part/> &forall;ChangeTaskPriorityN_TFSBSig | true &bullet; <word style="roman"/>pre<word/> ChangeTaskPriorityN_T </theorem-def></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:70" history="72"><schema-box>ChangeTaskPriorityS_T<decl-part/>   &Delta;Task
   target?: TASK
   newpri?: &Nopf;
   topReady!: TASK <ax-part/>  state(target?) = ready
@@ -202,13 +204,13 @@
   target? = idle &rArr;newpri? = 0
   &exists;st?: STATE; pri?: TASK &rarr;&Nopf;| st? = ready &wedge;pri? = priority &oplus;{(target? &rtarr;newpri?)}&bullet; Reschedule[tasks/tasks?]
   topReady! = target? </schema-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:71" history="72"><schema-box>ChangeTaskPriorityS_TFSBSig<decl-part/>   Task
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:71" history="73"><schema-box>ChangeTaskPriorityS_TFSBSig<decl-part/>   Task
   newpri?: &Nopf;
   target?: TASK <ax-part/>  state(target?) = ready
   newpri? &gt; priority(running_task)
   target? = idle &rArr;newpri? = 0 </schema-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:72" history="73"><theorem-def>ChangeTaskPriorityS_T_vc_ref<ax-part/> &forall;ChangeTaskPriorityS_TFSBSig | true &bullet; <word style="roman"/>pre<word/> ChangeTaskPriorityS_T </theorem-def></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:73" history="74"><schema-box>ChangeTaskPriorityD_T<decl-part/>   &Delta;Task
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:72" history="74"><theorem-def>ChangeTaskPriorityS_T_vc_ref<ax-part/> &forall;ChangeTaskPriorityS_TFSBSig | true &bullet; <word style="roman"/>pre<word/> ChangeTaskPriorityS_T </theorem-def></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:73" history="75"><schema-box>ChangeTaskPriorityD_T<decl-part/>   &Delta;Task
   target?: TASK
   topReady!: TASK
   newpri?: &Nopf;<ax-part/>  state(target?) = running
@@ -217,17 +219,18 @@
   &forall;t: state &suptilde;&lvparen;{ready}&rvparen;&bullet; priority(topReady!) &geq;priority(t)
   newpri? &lt; priority(topReady!)
   &exists;st?: STATE; pri?: TASK &rarr;&Nopf;| st? = ready &wedge;pri? = priority &oplus;{(target? &rtarr;newpri?)}&bullet; Reschedule[tasks/tasks?, topReady!/target?] </schema-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:74" history="75"><schema-box>ChangeTaskPriorityD_TFSBSig<decl-part/>   Task
-  newpri?: &Nopf;
-  target?: TASK <ax-part/>  state(target?) = running
-  target? = idle &rArr;newpri? = 0
-  &exists;topReady!: state &suptilde;&lvparen;{ready}&rvparen;&bullet;  newpri? &lt; priority(topReady!) &wedge;(&forall;t: state &suptilde;&lvparen;{ready}&rvparen;&bullet; priority(topReady!) &geq;priority(t)) </schema-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:75" history="76"><theorem-def>lChangeTaskPriorityD_T_Lemma<ax-part/> &forall;Task; target?, topReady!: TASK; newpri?: &Nopf;| state target? = running &wedge;(target? = idle &rArr;newpri? = 0) &wedge;state topReady! = ready &wedge;(&forall;rtsk: state &suptilde;&lvparen;{ready}&rvparen;&bullet; priority topReady! &geq;priority rtsk) &wedge;newpri? &lt; priority topReady! &bullet; &not;(Task[log_context := log_context &oplus;{(running_task, phys_context)}, phys_context := log_context topReady!, priority := priority &oplus;{(target?, newpri?)}, topReady!/running_task, state := state &oplus;({(running_task, ready)}&cup;{(topReady!, running)})] &wedge;(st &isin;TASK &wedge;&not;(state &oplus;({(running_task, ready)}&cup;{(topReady!, running)})) st = state st &rArr;(state st, (state &oplus;({(running_task, ready)}&cup;{(topReady!, running)})) st) &isin;transition) &rArr;t &isin;TASK &wedge;state t = ready &wedge;&not;priority topReady! &geq;priority t) </theorem-def></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:76" history="77"><theorem-def>ChangeTaskPriorityD_T_vc_ref<ax-part/> &forall;ChangeTaskPriorityD_TFSBSig | true &bullet; <word style="roman"/>pre<word/> ChangeTaskPriorityD_T </theorem-def></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:77" history="78"><zed-box> ChangeTaskPriority_T &eqhat;ChangeTaskPriorityN_T                        &vee;ChangeTaskPriorityS_T                        &vee;ChangeTaskPriorityD_T </zed-box></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:78" history="79"><theorem-def>CaseStudyStep1<ax-part/> &forall;Task; target?: TASK; newpri?: &Nopf;| tasks = {idle}&wedge;running_task = idle &wedge;newpri? = 1 &wedge;CreateTask_T &bullet; target? &isin;tasks' &wedge;state' target? = running &wedge;priority' target? = 1 </theorem-def></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:79" history="80"><theorem-def>CaseStudyStep3<ax-part/> &forall;Task; target?: TASK; newpri?: &Nopf;| tasks = {idle, Task1, Task2}&wedge;priority Task1 = 1 &wedge;priority Task2 = 2 &wedge;state Task1 = ready &wedge;running_task = Task2 &wedge;target? = Task1 &wedge;newpri? = 3 &wedge;ChangeTaskPriority_T &bullet; priority' Task1 = 3 &wedge;running_task' = Task1 </theorem-def></textItem
-><textItem location="/n/staff/scheng/temp/ZedSpecFreeRTOS_T.tex:80" history="81"><theorem-def>CaseStudyStep5<ax-part/> &forall;Task; Task1, Task2, Task3, target?: TASK | tasks = {idle, Task1, Task2, Task3}&wedge;priority Task1 = 3 &wedge;priority Task2 = 2 &wedge;priority Task3 = 4 &wedge;state Task1 = ready &wedge;state Task2 = ready &wedge;state Task3 = running &wedge;target? = Task3 &wedge;DeleteTask_T &bullet; state' Task3 = nonexistent &wedge;Task3 &notin;tasks' &wedge;running_task' = Task1 </theorem-def></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:74" history="76"><schema-box location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:74">ChangeTaskPriorityD_TFSBSig<decl-part/> Task
+newpri?: &Nopf;
+target?: TASK<ax-part/> state target? = running
+target? = idle &rArr; newpri? = 0
+&exists; readyTask: state &suptilde; &lvparen; {ready} &rvparen;
+    &bullet; newpri? &lt; priority readyTask</schema-box></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:75" history="77"><theorem-def>lChangeTaskPriorityD_T_Lemma<ax-part/> &forall;Task; target?, topReady!: TASK; newpri?: &Nopf;| state target? = running &wedge;(target? = idle &rArr;newpri? = 0) &wedge;state topReady! = ready &wedge;(&forall;rtsk: state &suptilde;&lvparen;{ready}&rvparen;&bullet; priority topReady! &geq;priority rtsk) &wedge;newpri? &lt; priority topReady! &bullet; &not;(Task[log_context := log_context &oplus;{(running_task, phys_context)}, phys_context := log_context topReady!, priority := priority &oplus;{(target?, newpri?)}, topReady!/running_task, state := state &oplus;({(running_task, ready)}&cup;{(topReady!, running)})] &wedge;(st &isin;TASK &wedge;&not;(state &oplus;({(running_task, ready)}&cup;{(topReady!, running)})) st = state st &rArr;(state st, (state &oplus;({(running_task, ready)}&cup;{(topReady!, running)})) st) &isin;transition) &rArr;t &isin;TASK &wedge;state t = ready &wedge;&not;priority topReady! &geq;priority t) </theorem-def></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:76" history="78"><theorem-def>ChangeTaskPriorityD_T_vc_ref<ax-part/> &forall;ChangeTaskPriorityD_TFSBSig | true &bullet; <word style="roman"/>pre<word/> ChangeTaskPriorityD_T </theorem-def></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:77" history="79"><zed-box> ChangeTaskPriority_T &eqhat;ChangeTaskPriorityN_T                        &vee;ChangeTaskPriorityS_T                        &vee;ChangeTaskPriorityD_T </zed-box></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:78" history="80"><theorem-def>CaseStudyStep1<ax-part/> &forall;Task; target?: TASK; newpri?: &Nopf;| tasks = {idle}&wedge;running_task = idle &wedge;newpri? = 1 &wedge;CreateTask_T &bullet; target? &isin;tasks' &wedge;state' target? = running &wedge;priority' target? = 1 </theorem-def></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:79" history="81"><theorem-def>CaseStudyStep3<ax-part/> &forall;Task; target?: TASK; newpri?: &Nopf;| tasks = {idle, Task1, Task2}&wedge;priority Task1 = 1 &wedge;priority Task2 = 2 &wedge;state Task1 = ready &wedge;running_task = Task2 &wedge;target? = Task1 &wedge;newpri? = 3 &wedge;ChangeTaskPriority_T &bullet; priority' Task1 = 3 &wedge;running_task' = Task1 </theorem-def></textItem
+><textItem location="/usr/userfs/s/sc677/z-spec-freertos/ZedSpecFreeRTOS_T.tex:80" history="82"><theorem-def>CaseStudyStep5<ax-part/> &forall;Task; Task1, Task2, Task3, target?: TASK | tasks = {idle, Task1, Task2, Task3}&wedge;priority Task1 = 3 &wedge;priority Task2 = 2 &wedge;priority Task3 = 4 &wedge;state Task1 = ready &wedge;state Task2 = ready &wedge;state Task3 = running &wedge;target? = Task3 &wedge;DeleteTask_T &bullet; state' Task3 = nonexistent &wedge;Task3 &notin;tasks' &wedge;running_task' = Task1 </theorem-def></textItem
 ><script name="ChangeTaskPriorityN_T_vc_ref"><scriptItem number="2"><ztext> with enabled (applyOverride) prove by reduce</ztext></scriptItem
 ><scriptItem number="3"><ztext>apply extensionality to predicate state &suptilde;&lvparen;{running}&rvparen;= {running_task}</ztext></scriptItem
 ><scriptItem number="4"><ztext>instantiate t == pt</ztext></scriptItem
@@ -257,14 +260,16 @@
 ></script
 ><script name="ContextDataInit"><scriptItem number="2"><ztext> prove by reduce</ztext></scriptItem
 ></script
-><script name="ChangeTaskPriorityD_T_vc_ref"><scriptItem number="2"><ztext> with disabled (Task) prove by reduce</ztext></scriptItem
-><scriptItem number="3"><ztext>instantiate running_task' == topReady!</ztext></scriptItem
-><scriptItem number="4"><ztext>prove</ztext></scriptItem
-><scriptItem number="5"><ztext>use lChangeTaskPriorityD_T_Lemma</ztext></scriptItem
-><scriptItem number="6"><ztext>prove</ztext></scriptItem
-><scriptItem number="7"><ztext>instantiate t__0 == rtsk</ztext></scriptItem
-><scriptItem number="8"><ztext>instantiate t__0 == t</ztext></scriptItem
-><scriptItem number="9"><ztext>prove</ztext></scriptItem
+><script name="ChangeTaskPriorityD_T_vc_ref"><scriptItem number="2"><ztext>use   topReadyTask[a:=state&suptilde;&lvparen;{ready}&rvparen;]</ztext></scriptItem
+><scriptItem number="3"><ztext> with disabled (Task) prove by reduce</ztext></scriptItem
+><scriptItem number="4"><ztext>instantiate   running_task' == f(state&suptilde;&lvparen;{ready}&rvparen;)</ztext></scriptItem
+><scriptItem number="5"><ztext>prove</ztext></scriptItem
+><scriptItem number="6"><ztext>use  lChangeTaskPriorityD_T_Lemma[topReady!:=f(state&suptilde;&lvparen;{ready}&rvparen;)]</ztext></scriptItem
+><scriptItem number="7"><ztext>prove</ztext></scriptItem
+><scriptItem number="8"><ztext>instantiate   t__0 == readyTask</ztext></scriptItem
+><scriptItem number="9"><ztext>instantiate t__0 == rtsk</ztext></scriptItem
+><scriptItem number="10"><ztext>instantiate t__0 == t</ztext></scriptItem
+><scriptItem number="11"><ztext>prove</ztext></scriptItem
 ></script
 ><script name="ExecuteRunningTask_T_vc_ref"><scriptItem number="2"><ztext> with disabled (TaskData, StateData, PrioData) prove by reduce</ztext></scriptItem
 ></script
@@ -321,13 +326,14 @@
 ><script name="CaseStudyStep3"><scriptItem number="2"><ztext> with disabled (Task, ChangeTaskPriorityS_T) prove by reduce</ztext></scriptItem
 ><scriptItem number="3"><ztext>prove by reduce</ztext></scriptItem
 ></script
-><script name="DeleteTaskS_T_vc_ref"><scriptItem number="2"><ztext> with disabled (Task) prove by reduce</ztext></scriptItem
-><scriptItem number="3"><ztext>instantiate running_task' == topReady!</ztext></scriptItem
-><scriptItem number="4"><ztext>prove</ztext></scriptItem
-><scriptItem number="5"><ztext>use lDeleteTaskS_T_Lemma</ztext></scriptItem
-><scriptItem number="6"><ztext>prove</ztext></scriptItem
-><scriptItem number="7"><ztext>instantiate t__0 == rtsk</ztext></scriptItem
-><scriptItem number="8"><ztext>prove</ztext></scriptItem
+><script name="DeleteTaskS_T_vc_ref"><scriptItem number="2"><ztext>use  topReadyTask[a:= state &suptilde;&lvparen;{ready}&rvparen;]</ztext></scriptItem
+><scriptItem number="3"><ztext> with disabled (Task) prove by reduce</ztext></scriptItem
+><scriptItem number="4"><ztext>instantiate  running_task' ==f (state&suptilde;&lvparen;{ready}&rvparen;)</ztext></scriptItem
+><scriptItem number="5"><ztext>prove</ztext></scriptItem
+><scriptItem number="6"><ztext>use  lDeleteTaskS_T_Lemma[topReady!:=f(state &suptilde;&lvparen;{ready}&rvparen;)]</ztext></scriptItem
+><scriptItem number="7"><ztext>prove</ztext></scriptItem
+><scriptItem number="8"><ztext>instantiate t__0 == rtsk</ztext></scriptItem
+><scriptItem number="9"><ztext>prove</ztext></scriptItem
 ></script
 ><script name="SuspendTaskO_T_vc_ref"><scriptItem number="2"><ztext> prove by reduce</ztext></scriptItem
 ></script
@@ -365,13 +371,14 @@
 ></script
 ><script name="StateDataInit"><scriptItem number="2"><ztext> prove by reduce</ztext></scriptItem
 ></script
-><script name="SuspendTaskS_T_vc_ref"><scriptItem number="2"><ztext> with disabled (Task) prove by reduce</ztext></scriptItem
-><scriptItem number="3"><ztext>instantiate running_task' == topReady!</ztext></scriptItem
-><scriptItem number="4"><ztext>prove</ztext></scriptItem
-><scriptItem number="5"><ztext>use lSuspendTaskS_T_Lemma</ztext></scriptItem
-><scriptItem number="6"><ztext>prove</ztext></scriptItem
-><scriptItem number="7"><ztext>instantiate t__0 == rtsk</ztext></scriptItem
-><scriptItem number="8"><ztext>prove</ztext></scriptItem
+><script name="SuspendTaskS_T_vc_ref"><scriptItem number="2"><ztext>use  topReadyTask[a:=state&suptilde;&lvparen;{ready}&rvparen;]</ztext></scriptItem
+><scriptItem number="3"><ztext> with disabled (Task) prove by reduce</ztext></scriptItem
+><scriptItem number="4"><ztext>instantiate  running_task' == f(state &suptilde;&lvparen;{ready}&rvparen;)</ztext></scriptItem
+><scriptItem number="5"><ztext>prove</ztext></scriptItem
+><scriptItem number="6"><ztext>use  lSuspendTaskS_T_Lemma[topReady! :=  f(state &suptilde;&lvparen;{ready}&rvparen;)]</ztext></scriptItem
+><scriptItem number="7"><ztext>prove</ztext></scriptItem
+><scriptItem number="8"><ztext>instantiate t__0 == rtsk</ztext></scriptItem
+><scriptItem number="9"><ztext>prove</ztext></scriptItem
 ></script
 ><script name="ChangeTaskPriorityS_T_vc_ref"><scriptItem number="2"><ztext> prove by reduce</ztext></scriptItem
 ><scriptItem number="3"><ztext>apply extensionality to predicate state &suptilde;&lvparen;{running}&rvparen;= {running_task}</ztext></scriptItem
@@ -523,5 +530,7 @@
 ><scriptItem number="25"><ztext>instantiate rtsk == t</ztext></scriptItem
 ><scriptItem number="26"><ztext>prove</ztext></scriptItem
 ><scriptItem number="27"><ztext>next</ztext></scriptItem
+></script
+><script name="f$domainCheck"><scriptItem number="2"><ztext>prove</ztext></scriptItem
 ></script
 ></Z-EVES-GUI-State>

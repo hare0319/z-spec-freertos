@@ -8,19 +8,6 @@
 %   ChangeTaskPriority\_T
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\documentclass[a4paper, 12pt]{article}
-\usepackage[margin=2cm, includeheadfoot]{geometry}
-\usepackage{z-eves}
-
-\makeatletter
-\renewcommand{\@znoskip}{\offinterlineskip}
-
-\begin{document}
-
-%\begin{zsection}
-%  \SECTION m6Task \parents standard\_toolkit
-%\end{zsection}
-
 \begin{zed}
   [CONTEXT, TASK]
 \end{zed}
@@ -55,20 +42,6 @@ with enabled (transition) prove by reduce;
 with normalization with enabled (transition) prove by reduce;
 \end{zproof}
 
-%
-%This two definition will be used in later work.
-%
-%\begin{axdef}
-%  slice\_delay: \nat 
-%\where
-%  %\Label{disabled slice_delay_def} slice\_delay = 1
-%  slice\_delay = 1
-%\end{axdef}
-%
-%\begin{zed}
-%  BOOL ::= TRUE | FALSE
-%\end{zed}
-%
 \begin{schema}{TaskData}
   tasks: \power  TASK\\
   running\_task: TASK
@@ -95,7 +68,7 @@ prove by reduce;
 \begin{schema}{StateData}
   state: TASK \fun  STATE
 \where
-  state(idle) \in  \{ready, running\}
+  state idle \in  \{ready, running\}
 \end{schema}
 
 \begin{schema}{Init\_StateData}
@@ -135,7 +108,7 @@ prove by reduce;
 \begin{schema}{PrioData}
   priority: TASK \fun  \nat 
 \where
-  priority(idle) = 0
+  priority idle = 0
 \end{schema}
 
 \begin{schema}{Init\_PrioData}
@@ -160,18 +133,29 @@ prove by reduce;
 \where
   tasks = TASK \setminus  (state \inv  \limg  \{nonexistent\} \rimg )\\
   state \inv  \limg  \{running\} \rimg  = \{running\_task\}\\
-  \forall  pt: state \inv  \limg  \{ready\} \rimg  @ priority(running\_task)\geq  priority(pt)
+  \forall  pt: state \inv  \limg  \{ready\} \rimg  @ priority running\_task \geq  priority pt
 \end{schema}
 
 \begin{schema}{\Delta Task}
   Task\\
   Task'
 \where
-  \forall  st: TASK | state'(st) \neq  state(st) @ state(st) \mapsto  state'(st) \in  transition
+  \forall  st: TASK | state' st \neq  state st @ state st \mapsto  state' st \in  transition
 \end{schema}
 
+\begin{axdef}
+  f: \power  TASK \pfun  TASK
+\where
+  \emptyset \notin  \dom  f\\
+  \Label{topReadyTask}  \forall  Task; a: \power  TASK @ a \in  \dom  f \land  f a \in  a \land  (\forall  t: a @ priority (f a) \geq  priority t)
+\end{axdef}
+
+\begin{zproof}[f\$domainCheck]
+prove;
+\end{zproof}
+
 \begin{theorem}{TaskProperty1}
-\forall  Task @ state(running\_task) = running
+\forall  Task @ state running\_task = running
 \end{theorem}
 
 \begin{zproof}[TaskProperty1]
@@ -199,7 +183,7 @@ prove;
 \end{zproof}
 
 \begin{theorem}{TaskProperty6}
-\forall  Task; t: TASK | 0 < priority(t) @ idle \neq  t
+\forall  Task; t: TASK | 0 < priority t @ idle \neq  t
 \end{theorem}
 
 \begin{zproof}[TaskProperty6]
@@ -238,7 +222,7 @@ prove;
   tasks' = tasks?\\
   running\_task' = target?\\
   state' = state \oplus  \{(target? \mapsto  running), (running\_task \mapsto  st?)\}\\
-  phys\_context' = log\_context(target?)\\
+  phys\_context' = log\_context target?\\
   log\_context' = log\_context \oplus  \{(running\_task \mapsto  phys\_context)\}\\
   priority' = pri?
 \end{schema}
@@ -252,8 +236,8 @@ disableReschedule \defs [Task | false] \land  Reschedule
   target?: TASK\\
   newpri?: \nat 
 \where
-  state(target?) = nonexistent\\
-  newpri? \leq  priority(running\_task)\\
+  state target? = nonexistent\\
+  newpri? \leq  priority running\_task\\
   tasks' = tasks \cup  \{target?\}\\
   running\_task' = running\_task\\
   state' = state \oplus  \{(target? \mapsto  ready)\}\\
@@ -263,11 +247,11 @@ disableReschedule \defs [Task | false] \land  Reschedule
 
 \begin{schema}{CreateTaskN\_TFSBSig}
   Task\\
-  target?: TASK \\
-  newpri?: \nat
+  target?: TASK\\
+  newpri?: \nat 
 \where
-  state(target?) = nonexistent\\
-  newpri? \leq  priority(running\_task)
+  state target? = nonexistent\\
+  newpri? \leq  priority running\_task
 \end{schema}
 
 \begin{theorem}{CreateTaskN\_T\_vc\_ref}
@@ -289,18 +273,18 @@ with normalization reduce;
   target?: TASK\\
   newpri?: \nat 
 \where
-  state(target?) = nonexistent\\
-  newpri? > priority(running\_task)\\
+  state target? = nonexistent\\
+  newpri? > priority running\_task\\
   \exists  st?: STATE; tasks?: \power  TASK; pri?: TASK \fun  \nat  | st? = ready \land  tasks? = tasks \cup  \{target?\} \land  pri? = priority \oplus  \{(target? \mapsto  newpri?)\} @ Reschedule
 \end{schema}
 
 \begin{schema}{CreateTaskS\_TFSBSig}
   Task\\
-  target?: TASK \\
-  newpri?: \nat
+  target?: TASK\\
+  newpri?: \nat 
 \where
-  state(target?) = nonexistent\\
-  newpri? > priority(running\_task)
+  state target? = nonexistent\\
+  newpri? > priority running\_task
 \end{schema}
 
 \begin{theorem}{CreateTaskS\_T\_vc\_ref}
@@ -358,7 +342,7 @@ CreateTask\_T \defs CreateTaskN\_T \lor  CreateTaskS\_T
   topReady!: TASK
 \where
   target? \in  tasks \setminus  \{idle\}\\
-  state(target?) \in  \{ready, blocked, suspended\}\\
+  state target? \in  \{ready, blocked, suspended\}\\
   tasks' = tasks \setminus  \{target?\}\\
   running\_task' = running\_task\\
   state' = state \oplus  \{(target? \mapsto  nonexistent)\}\\
@@ -373,7 +357,7 @@ CreateTask\_T \defs CreateTaskN\_T \lor  CreateTaskS\_T
   target?: TASK
 \where
   target? \in  tasks \setminus  \{idle\}\\
-  state(target?) \in  \{ready, blocked, suspended\}
+  state target? \in  \{ready, blocked, suspended\}
 \end{schema}
 
 \begin{theorem}{DeleteTaskN\_T\_vc\_ref}
@@ -400,13 +384,13 @@ prove;
   topReady!: TASK
 \where
   target? \in  tasks \setminus  \{idle\}\\
-  state(target?) \in  \{running\}\\
-  state(topReady!) = ready\\
-  \forall  t: state \inv  \limg  \{ready\} \rimg  @ priority(topReady!) \geq  priority(t)\\
+  state target? \in  \{running\}\\
+  state topReady! = ready\\
+  \forall  t: state \inv  \limg  \{ready\} \rimg  @ priority topReady! \geq  priority t\\
   tasks' = tasks \setminus  \{target?\}\\
   running\_task' = topReady!\\
   state' = state \oplus  \{(topReady! \mapsto  running), (target? \mapsto  nonexistent)\}\\
-  phys\_context' = log\_context(topReady!)\\
+  phys\_context' = log\_context topReady!\\
   log\_context' = log\_context \oplus  \{(target? \mapsto  bare\_context)\}\\
   \Xi PrioData
 \end{schema}
@@ -416,8 +400,7 @@ prove;
   target?: TASK
 \where
   target? \in  tasks \setminus  \{idle\}\\
-  state(target?) \in  \{running\}\\
-  \exists  topReady!: state \inv \limg \{ready\} \rimg @ (\forall  t: state \inv  \limg  \{ready\} \rimg  @ priority(topReady!) \geq  priority(t))
+  state target? \in  \{running\}
 \end{schema}
 
 \begin{theorem}{lDeleteTaskS\_T\_Lemma}
@@ -457,17 +440,18 @@ next;
 \end{theorem}
 
 \begin{zproof}[DeleteTaskS\_T\_vc\_ref]
+use topReadyTask[a := state \inv  \limg  \{ready\} \rimg ];
 with disabled (Task) prove by reduce;
-instantiate running\_task' == topReady!;
+instantiate running\_task' == f (state \inv  \limg  \{ready\} \rimg );
 prove;
-use lDeleteTaskS\_T\_Lemma;
+use lDeleteTaskS\_T\_Lemma[topReady! := f (state \inv  \limg  \{ready\} \rimg )];
 prove;
 instantiate t\_\_0 == rtsk;
 prove;
 \end{zproof}
 
 \begin{zed}
-DeleteTask\_T \defs DeleteTaskN\_T \lor DeleteTaskS\_T
+DeleteTask\_T \defs DeleteTaskN\_T \lor  DeleteTaskS\_T
 \end{zed}
 
 \begin{schema}{ExecuteRunningTask\_T}
@@ -502,7 +486,7 @@ with disabled (TaskData, StateData, PrioData) prove by reduce;
   topReady!: TASK
 \where
   target? \in  tasks \setminus  \{idle\}\\
-  state(target?) \in  \{ready, blocked\}\\
+  state target? \in  \{ready, blocked\}\\
   \Xi TaskData\\
   state' = state \oplus  \{(target? \mapsto  suspended)\}\\
   \Xi ContextData\\
@@ -515,7 +499,7 @@ with disabled (TaskData, StateData, PrioData) prove by reduce;
   target?: TASK
 \where
   target? \in  tasks \setminus  \{idle\}\\
-  state(target?) \in  \{ready, blocked\}
+  state target? \in  \{ready, blocked\}
 \end{schema}
 
 \begin{theorem}{SuspendTaskN\_T\_vc\_ref}
@@ -548,9 +532,9 @@ next;
   topReady!: TASK
 \where
   target? \in  tasks \setminus  \{idle\}\\
-  state(target?) \in  \{running\}\\
-  state(topReady!) = ready\\
-  \forall  t: state \inv  \limg  \{ready\} \rimg  @ priority(topReady!) \geq  priority(t)\\
+  state target? \in  \{running\}\\
+  state topReady! = ready\\
+  \forall  t: state \inv  \limg  \{ready\} \rimg  @ priority topReady! \geq  priority t\\
   \exists  st?: STATE | st? = suspended @ Reschedule[tasks/tasks?, priority/pri?, topReady!/target?]
 \end{schema}
 
@@ -578,8 +562,7 @@ prove by reduce;
   target?: TASK
 \where
   target? \in  tasks \setminus  \{idle\}\\
-  state(target?) \in  \{running\}\\
-  \exists topReady!: state \inv \limg \{ready\} \rimg @  (\forall  t: state \inv  \limg  \{ready\} \rimg  @ priority(topReady!) \geq  priority(t))
+  state target? \in  \{running\}
 \end{schema}
 
 \begin{theorem}{lSuspendTaskS\_T\_Lemma}
@@ -620,10 +603,11 @@ next;
 \end{theorem}
 
 \begin{zproof}[SuspendTaskS\_T\_vc\_ref]
+use topReadyTask[a := state \inv  \limg  \{ready\} \rimg ];
 with disabled (Task) prove by reduce;
-instantiate running\_task' == topReady!;
+instantiate running\_task' == f (state \inv  \limg  \{ready\} \rimg );
 prove;
-use lSuspendTaskS\_T\_Lemma;
+use lSuspendTaskS\_T\_Lemma[topReady! := f (state \inv  \limg  \{ready\} \rimg )];
 prove;
 instantiate t\_\_0 == rtsk;
 prove;
@@ -634,7 +618,7 @@ prove;
   target?: TASK\\
   topReady!: TASK
 \where
-  state(target?) \in  \{suspended\}\\
+  state target? \in  \{suspended\}\\
   topReady! = running\_task
 \end{schema}
 
@@ -643,7 +627,7 @@ prove;
   target?: TASK\\
   topReady!: TASK
 \where
-  state(target?) \in  \{suspended\}
+  state target? \in  \{suspended\}
 \end{schema}
 
 \begin{theorem}{SuspendTaskO\_T\_vc\_ref}
@@ -654,19 +638,16 @@ prove;
 prove by reduce;
 \end{zproof}
 
-
 \begin{zed}
-SuspendTask\_T \defs SuspendTaskN\_T \lor SuspendTaskS\_T
-                \lor SuspendTaskO\_T
+SuspendTask\_T \defs SuspendTaskN\_T \lor  SuspendTaskS\_T \lor  SuspendTaskO\_T
 \end{zed}
-
 
 \begin{schema}{ResumeTaskN\_T}
   \Delta Task\\
   target?: TASK
 \where
-  state(target?) = suspended\\
-  priority(target?) \leq  priority(running\_task)\\
+  state target? = suspended\\
+  priority target? \leq  priority running\_task\\
   \Xi TaskData\\
   state' = state \oplus  \{(target? \mapsto  ready)\}\\
   \Xi ContextData\\
@@ -677,8 +658,8 @@ SuspendTask\_T \defs SuspendTaskN\_T \lor SuspendTaskS\_T
   Task\\
   target?: TASK
 \where
-  state(target?) = suspended\\
-  priority(target?) \leq  priority(running\_task)
+  state target? = suspended\\
+  priority target? \leq  priority running\_task
 \end{schema}
 
 \begin{theorem}{ResumeTaskN\_T\_vc\_ref}
@@ -699,8 +680,8 @@ with normalization prove;
   \Delta Task\\
   target?: TASK
 \where
-  state(target?) = suspended\\
-  priority(target?) > priority(running\_task)\\
+  state target? = suspended\\
+  priority target? > priority running\_task\\
   \exists  st?: STATE | st? = ready @ Reschedule[tasks/tasks?, priority/pri?]
 \end{schema}
 
@@ -708,8 +689,8 @@ with normalization prove;
   Task\\
   target?: TASK
 \where
-  state(target?) = suspended\\
-  priority(target?) > priority(running\_task)
+  state target? = suspended\\
+  priority target? > priority running\_task
 \end{schema}
 
 \begin{theorem}{ResumeTaskS\_T\_vc\_ref}
@@ -744,9 +725,8 @@ next;
 \end{zproof}
 
 \begin{zed}
-ResumeTask\_T \defs ResumeTaskN\_T \lor ResumeTaskS\_T
+ResumeTask\_T \defs ResumeTaskN\_T \lor  ResumeTaskS\_T
 \end{zed}
-
 
 \begin{schema}{ChangeTaskPriorityN\_T}
   \Delta Task\\
@@ -754,9 +734,9 @@ ResumeTask\_T \defs ResumeTaskN\_T \lor ResumeTaskS\_T
   target?: TASK\\
   topReady!: TASK
 \where
-  state(target?) = ready \implies  newpri? \leq  priority(running\_task)\\
-  state(target?) = running \implies  (\forall  t: state \inv  \limg  \{ready\} \rimg  @ newpri? \geq  priority(t))\\
-  state(target?) \neq  nonexistent\\
+  state target? = ready \implies  newpri? \leq  priority running\_task\\
+  state target? = running \implies  (\forall  t: state \inv  \limg  \{ready\} \rimg  @ newpri? \geq  priority t)\\
+  state target? \neq  nonexistent\\
   target? = idle \implies  newpri? = 0\\
   \Xi TaskData\\
   \Xi StateData\\
@@ -770,9 +750,9 @@ ResumeTask\_T \defs ResumeTaskN\_T \lor ResumeTaskS\_T
   newpri?: \nat \\
   target?: TASK
 \where
-  state(target?) = ready \implies  newpri? \leq  priority(running\_task)\\
-  state(target?) = running \implies  (\forall  t: state \inv  \limg  \{ready\} \rimg  @ newpri? \geq  priority(t))\\
-  state(target?) \neq  nonexistent\\
+  state target? = ready \implies  newpri? \leq  priority running\_task\\
+  state target? = running \implies  (\forall  t: state \inv  \limg  \{ready\} \rimg  @ newpri? \geq  priority t)\\
+  state target? \neq  nonexistent\\
   target? = idle \implies  newpri? = 0
 \end{schema}
 
@@ -793,8 +773,8 @@ with normalization prove;
   newpri?: \nat \\
   topReady!: TASK
 \where
-  state(target?) = ready\\
-  newpri? > priority(running\_task)\\
+  state target? = ready\\
+  newpri? > priority running\_task\\
   target? = idle \implies  newpri? = 0\\
   \exists  st?: STATE; pri?: TASK \fun  \nat  | st? = ready \land  pri? = priority \oplus  \{(target? \mapsto  newpri?)\} @ Reschedule[tasks/tasks?]\\
   topReady! = target?
@@ -805,8 +785,8 @@ with normalization prove;
   newpri?: \nat \\
   target?: TASK
 \where
-  state(target?) = ready\\
-  newpri? > priority(running\_task)\\
+  state target? = ready\\
+  newpri? > priority running\_task\\
   target? = idle \implies  newpri? = 0
 \end{schema}
 
@@ -842,11 +822,11 @@ next;
   topReady!: TASK\\
   newpri?: \nat 
 \where
-  state(target?) = running\\
+  state target? = running\\
   target? = idle \implies  newpri? = 0\\
-  state(topReady!) = ready\\
-  \forall  t: state \inv  \limg  \{ready\} \rimg  @ priority(topReady!) \geq  priority(t)\\
-  newpri? < priority(topReady!)\\
+  state topReady! = ready\\
+  \forall  t: state \inv  \limg  \{ready\} \rimg  @ priority topReady! \geq  priority t\\
+  newpri? < priority topReady!\\
   \exists  st?: STATE; pri?: TASK \fun  \nat  | st? = ready \land  pri? = priority \oplus  \{(target? \mapsto  newpri?)\} @ Reschedule[tasks/tasks?, topReady!/target?]
 \end{schema}
 
@@ -855,13 +835,13 @@ next;
   newpri?: \nat \\
   target?: TASK
 \where
-  state(target?) = running\\
+  state target? = running\\
   target? = idle \implies  newpri? = 0\\
-  \exists topReady!: state \inv \limg \{ready\} \rimg @  newpri? < priority(topReady!) \land  (\forall  t: state \inv  \limg  \{ready\} \rimg  @ priority(topReady!) \geq  priority(t))
+  \exists  readyTask: state \inv  \limg  \{ready\} \rimg  @ newpri? < priority readyTask
 \end{schema}
 
 \begin{theorem}{lChangeTaskPriorityD\_T\_Lemma}
-\forall  Task; target?, topReady!: TASK; newpri?: \nat | state target? = running \land  (target? = idle \implies  newpri? = 0) \land  state topReady! = ready \land  (\forall  rtsk: state \inv  \limg  \{ready\} \rimg  @ priority topReady! \geq  priority rtsk) \land  newpri? < priority topReady! @ \lnot  (Task[log\_context := log\_context \oplus  \{(running\_task, phys\_context)\}, phys\_context := log\_context topReady!, priority := priority \oplus  \{(target?, newpri?)\}, topReady!/running\_task, state := state \oplus  (\{(running\_task, ready)\} \cup  \{(topReady!, running)\})] \land  (st \in  TASK \land  \lnot  (state \oplus  (\{(running\_task, ready)\} \cup  \{(topReady!, running)\})) st = state st \implies  (state st, (state \oplus  (\{(running\_task, ready)\} \cup  \{(topReady!, running)\})) st) \in  transition) \implies  t \in  TASK \land  state t = ready \land  \lnot  priority topReady! \geq  priority t)
+\forall  Task; target?, topReady!: TASK; newpri?: \nat  | state target? = running \land  (target? = idle \implies  newpri? = 0) \land  state topReady! = ready \land  (\forall  rtsk: state \inv  \limg  \{ready\} \rimg  @ priority topReady! \geq  priority rtsk) \land  newpri? < priority topReady! @ \lnot  (Task[log\_context := log\_context \oplus  \{(running\_task, phys\_context)\}, phys\_context := log\_context topReady!, priority := priority \oplus  \{(target?, newpri?)\}, topReady!/running\_task, state := state \oplus  (\{(running\_task, ready)\} \cup  \{(topReady!, running)\})] \land  (st \in  TASK \land  \lnot  (state \oplus  (\{(running\_task, ready)\} \cup  \{(topReady!, running)\})) st = state st \implies  (state st, (state \oplus  (\{(running\_task, ready)\} \cup  \{(topReady!, running)\})) st) \in  transition) \implies  t \in  TASK \land  state t = ready \land  \lnot  priority topReady! \geq  priority t)
 \end{theorem}
 
 \begin{zproof}[lChangeTaskPriorityD\_T\_Lemma]
@@ -897,20 +877,20 @@ next;
 \end{theorem}
 
 \begin{zproof}[ChangeTaskPriorityD\_T\_vc\_ref]
+use topReadyTask[a := state \inv  \limg  \{ready\} \rimg ];
 with disabled (Task) prove by reduce;
-instantiate running\_task' == topReady!;
+instantiate running\_task' == f (state \inv  \limg  \{ready\} \rimg );
 prove;
-use lChangeTaskPriorityD\_T\_Lemma;
+use lChangeTaskPriorityD\_T\_Lemma[topReady! := f (state \inv  \limg  \{ready\} \rimg )];
 prove;
+instantiate t\_\_0 == readyTask;
 instantiate t\_\_0 == rtsk;
 instantiate t\_\_0 == t;
 prove;
 \end{zproof}
 
 \begin{zed}
-ChangeTaskPriority\_T \defs ChangeTaskPriorityN\_T
-                       \lor ChangeTaskPriorityS\_T
-                       \lor ChangeTaskPriorityD\_T
+ChangeTaskPriority\_T \defs ChangeTaskPriorityN\_T \lor  ChangeTaskPriorityS\_T \lor  ChangeTaskPriorityD\_T
 \end{zed}
 
 \begin{theorem}{CaseStudyStep1}
@@ -946,7 +926,4 @@ invoke PrioData;
 split topReady! = idle;
 prove;
 \end{zproof}
-
-
-\end{document}
 
